@@ -1,9 +1,9 @@
 <style>
   .search-btn {
-    background-color: red;
+    background-color: #fe424d;
     color: #fff;
     border-radius: 25px;
-    padding: 0 1rem 0 1 rem;
+    padding: 0.5rem 1rem;
     
   }
   .search-btn:hover{
@@ -16,13 +16,14 @@
   }
   .search-input {
     border-radius: 25px;
-    padding: 0.5rem 2rem 0.5rem 3.2rem;
+    padding: 0.5rem 1rem;
     font-size: 1rem;
-    display: inline;
+    display: block;
   }
   .auth-links{
     display: flex;
     align-items: center;
+    gap: 0.1rem;
 }
 
 .auth-links .nav-link{
@@ -42,6 +43,19 @@
   .wishlist-nav i {
     color: #fe424d;
   }
+
+  @media (max-width: 767.98px) {
+    .auth-links {
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .auth-links .nav-link,
+    .logout-btn {
+      padding-top: 0.35rem;
+      padding-bottom: 0.35rem;
+    }
+  }
 </style>
 
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
@@ -57,7 +71,7 @@
       </div>
 
       <div class="navbar-nav ms-auto">
-        <form class="d-flex" role="search" action="/listings" method="GET">
+        <form class="search-form" role="search" action="/listings" method="GET">
           <input
             class="form-control me-2 search-input"
             type="search"

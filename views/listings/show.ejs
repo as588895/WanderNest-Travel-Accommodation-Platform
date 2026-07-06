@@ -8,7 +8,7 @@
   // console.log("Listing:", listing);
 </script>
 <div class="row mt-3">
-  <div class="col-8 offset-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
+  <div class="col-12 col-lg-10 col-xl-8 mx-auto d-flex justify-content-between align-items-center flex-wrap gap-2">
     <h3><%= listing.title %></h3>
     <% if (currUser) { %>
       <form
@@ -23,7 +23,7 @@
     <% } %>
    </div>
 
-    <div class="card col-6 offset-3 show-card listing-card">
+    <div class="card col-12 col-lg-10 col-xl-8 mx-auto show-card listing-card">
         <img src="<%= listing.image.url %>" class="card-img-top show-img" alt="listing_image">
 
         <div class="card-body">
@@ -40,16 +40,16 @@
     <br />
 
   <% if(currUser && listing.owner && String(listing.owner._id) === String(currUser._id)) { %>
-    <div class="btns">
-      <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark col-1 offset-3 edit-btn ">Edit</a>
+    <div class="btns col-12 col-lg-10 col-xl-8 mx-auto mt-2 mb-2">
+      <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark edit-btn ">Edit</a>
       <form method="POST" action="/listings/<%=listing._id%>?_method=DELETE">
-         <button class="btn btn-dark offset-5 delete-btn">Delete </button>
+         <button class="btn btn-dark delete-btn">Delete </button>
       </form>
     </div>
   <% } %> 
     <!-- Rating and Comment -->
      
-  <div class="col-8 offset-3 mb-3">
+  <div class="col-12 col-lg-10 col-xl-8 mx-auto mb-3">
      
     <% if(currUser) { %>
       <hr />
@@ -88,7 +88,7 @@
       <div class="row">
           <p><b>All Reviews</b></p>
         <% for (review of listing.reviews) { %>
-        <div class="card col-5 ms-3 mb-3">
+        <div class="card col-12 col-md-5 ms-md-3 ms-0 mb-3">
           <div class="card-body">
             <h5 class="card-title">@<%= review.author.username %></h5>
             <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
@@ -107,7 +107,7 @@
       <% }  %>  
     </div>
          <!-- Mapbox Code -->
-    <div class="col-6 offset-3 mb-3">
+    <div class="col-12 col-lg-10 col-xl-8 mx-auto mb-3">
         <h3>Where you'll be</h3>
         <div id="map"></div>
     </div>

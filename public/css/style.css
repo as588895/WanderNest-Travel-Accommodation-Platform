@@ -5,6 +5,10 @@ body {
      min-height: 100vh;
 }
 
+img {
+    max-width: 100%;
+}
+
 .container {
     flex: 1;
 }
@@ -32,6 +36,13 @@ body {
 
 .navbar-nav form {
     width: 100%;
+}
+
+.search-form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .search-input {
@@ -64,12 +75,13 @@ text-decoration: underline;
  .f-info {
     text-align: center;
     display: flex;
-    height: 8rem;
+     min-height: 8rem;
     background-color: #ebebeb;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    align-items: space-evenly;
+     align-items: center;
+     gap: 0.5rem;
  }
 
  /* Cards */
@@ -127,6 +139,10 @@ text-decoration: underline;
     border-radius: 1rem !important;
     width: 100% !important;
     object-fit: cover !important;
+}
+
+.listing-cover-img {
+    height: 20rem;
 }
 
 .card-body {
@@ -204,6 +220,19 @@ text-decoration: underline;
     max-width: 760px;
 }
 
+.booking-meta .d-flex {
+    gap: 0.75rem;
+}
+
+.btns {
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.btns form {
+    margin: 0;
+}
+
 .success-icon {
     font-size: 3rem;
     color: #16a34a;
@@ -218,6 +247,15 @@ text-decoration: underline;
 
 /* Responsive tweaks */
 @media (max-width: 991.98px) {
+    .search-form {
+        flex-wrap: wrap;
+    }
+
+    .search-form .search-input,
+    .search-form .search-btn {
+        width: 100%;
+    }
+
     .navbar-collapse {
         padding-top: 0.75rem;
     }
@@ -230,6 +268,10 @@ text-decoration: underline;
 
     .search-input {
         min-width: 160px;
+    }
+
+    .listing-cover-img {
+        height: 17rem;
     }
 
     .show-card {
@@ -257,8 +299,21 @@ text-decoration: underline;
         width: 100%;
     }
 
+    .search-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-form .search-btn {
+        width: 100%;
+    }
+
     .search-btn {
         white-space: nowrap;
+    }
+
+    .listing-cover-img {
+        height: 14rem;
     }
 
     .show-img {
@@ -297,5 +352,15 @@ text-decoration: underline;
 
     .confirm-listing-img {
         height: 180px;
+    }
+
+    .f-info {
+        padding: 0.85rem 0.5rem;
+    }
+
+    .booking-meta .d-flex {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.2rem;
     }
 }
