@@ -245,3 +245,19 @@ module.exports.renderMyOrders = async (req, res) => {
 
     res.render("bookings/orders.ejs", { bookings });
 };
+
+module.exports.destroyBooking = async (req, res) => {
+    const { bookingId } = req.params;
+    const deletedBooking = await Booking.findOneAndDelete({
+        _id: bookingId,
+        user: req.user._id,
+    });
+
+    if (!deletedBooking) {
+        req.flash("error", "Booking not found or you are not allowed to delete it.");
+        return res.redirect("/listings/orders");
+    }
+
+    req.flash("success", "Booking deleted successfully.");
+    res.redirect("/listings/orders");
+};
