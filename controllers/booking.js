@@ -246,6 +246,51 @@ module.exports.renderMyOrders = async (req, res) => {
     res.render("bookings/orders.ejs", { bookings });
 };
 
+module.exports.cancelBooking = async (req, res) => {
+    const { bookingId } = req.params;
+    const booking = await Booking.findOne({
+        _id: bookingId,
+        user: req.user._id,
+    });
+
+    if (!booking) {
+        req.flash("error", "Booking not found or you are not allowed to cancel it.");
+        return res.redirect("/listings/orders");
+    }
+
+    const today = getStartOfDay(new Date());
+    if (booking.bookingStatus !== "confirmed" || booking.checkIn < today) {
+        req.flash("error", "Only upcoming confirmed bookings can be cancelled.");
+        return res.redirect("/listings/orders");
+    }
+
+    if (booking.paymentStatus === "paid") {
+        if (!booking.razorpayPaymentId) {
+            req.flash("error", "Refund cannot be initiated because payment details are missing.");
+            return res.redirect("/listings/orders");
+        }
+
+        try {
+            const razorpay = createRazorpayClient();
+            const refund = await razorpay.payments.refund(booking.razorpayPaymentId, {
+                amount: Math.round(booking.totalPrice * 100),
+            });
+            booking.razorpayRefundId = refund.id;
+            booking.paymentStatus = "refunded";
+        } catch (err) {
+            console.error("cancelBooking refund error:", err);
+            req.flash("error", "Refund could not be initiated. Your booking is still active.");
+            return res.redirect("/listings/orders");
+        }
+    }
+
+    booking.bookingStatus = "cancelled";
+    await booking.save();
+
+    req.flash("success", "Booking cancelled. Your refund has been initiated.");
+    res.redirect("/listings/orders");
+};
+
 module.exports.destroyBooking = async (req, res) => {
     const { bookingId } = req.params;
     const deletedBooking = await Booking.findOneAndDelete({

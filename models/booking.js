@@ -33,7 +33,7 @@ const bookingSchema = new Schema(
         },
         paymentStatus: {
             type: String,
-            enum: ["pending", "paid", "failed"],
+            enum: ["pending", "paid", "refunded", "failed"],
             default: "pending",
         },
         bookingStatus: {
@@ -43,6 +43,7 @@ const bookingSchema = new Schema(
         },
         razorpayOrderId: String,
         razorpayPaymentId: String,
+        razorpayRefundId: String,
     },
     { timestamps: true }
 );

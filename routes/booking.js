@@ -8,6 +8,7 @@ router.get("/:id/book", isLoggedIn, wrapAsync(bookingController.renderConfirmAnd
 router.post("/:id/book/create-order", isLoggedIn, wrapAsync(bookingController.createRazorpayOrder));
 router.post("/:id/book/confirm", isLoggedIn, wrapAsync(bookingController.confirmBookingPayment));
 router.get("/bookings/:bookingId/success", isLoggedIn, wrapAsync(bookingController.renderBookingSuccess));
+router.patch("/bookings/:bookingId/cancel", isLoggedIn, wrapAsync(bookingController.cancelBooking));
 router.delete("/bookings/:bookingId", isLoggedIn, wrapAsync(bookingController.destroyBooking));
 
 module.exports = router;

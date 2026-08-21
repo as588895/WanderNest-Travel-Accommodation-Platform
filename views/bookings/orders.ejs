@@ -157,6 +157,11 @@
     font-size: 1.25rem;
   }
 
+  .cancel-modal-icon {
+    background: #fff4d8;
+    color: #a16207;
+  }
+
   @media (max-width: 767.98px) {
     .order-meta {
       grid-template-columns: 1fr;
@@ -190,6 +195,8 @@
   <% } else { %>
     <div class="d-flex flex-column gap-3">
       <% for (let booking of bookings) { %>
+        <% const today = new Date(); today.setHours(0, 0, 0, 0); %>
+        <% const isUpcoming = booking.checkIn >= today; %>
         <div class="order-card">
           <div class="row g-0 align-items-center">
             <div class="col-md-3">
@@ -238,6 +245,12 @@
 
                   <a href="/listings/<%= booking.listing._id %>" class="btn btn-outline-dark btn-sm rounded-pill">View listing</a>
 
+                  <% if (isUpcoming && booking.bookingStatus === "confirmed") { %>
+                    <form method="POST" action="/listings/bookings/<%= booking._id %>/cancel?_method=PATCH" class="delete-booking-form" id="cancel-booking-<%= booking._id %>">
+                      <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#cancelBookingModal" data-cancel-form="cancel-booking-<%= booking._id %>">Cancel Booking</button>
+                    </form>
+                  <% } %>
+
                   <form method="POST" action="/listings/bookings/<%= booking._id %>?_method=DELETE" class="delete-booking-form" id="delete-booking-<%= booking._id %>">
                     <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#deleteBookingModal" data-delete-form="delete-booking-<%= booking._id %>">Delete</button>
                   </form>
@@ -273,10 +286,35 @@
   </div>
 </div>
 
+<div class="modal fade" id="cancelBookingModal" tabindex="-1" aria-labelledby="cancelBookingModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header border-0 pb-0">
+        <div class="delete-modal-icon cancel-modal-icon" aria-hidden="true">
+          <i class="fa-solid fa-calendar-xmark"></i>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body pt-3">
+        <h5 class="modal-title mb-2" id="cancelBookingModalLabel">Cancel Booking?</h5>
+        <p class="mb-1">Are you sure you want to cancel this booking?</p>
+        <p class="text-muted mb-0">Your refund will be processed according to the cancellation policy.</p>
+      </div>
+      <div class="modal-footer border-0 pt-0">
+        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">Keep Booking</button>
+        <button type="button" class="btn btn-danger rounded-pill px-4" id="confirmCancelBooking">Yes, Cancel Booking</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   const deleteBookingModal = document.getElementById("deleteBookingModal");
   const confirmDeleteBooking = document.getElementById("confirmDeleteBooking");
+  const cancelBookingModal = document.getElementById("cancelBookingModal");
+  const confirmCancelBooking = document.getElementById("confirmCancelBooking");
   let selectedDeleteForm = null;
+  let selectedCancelForm = null;
 
   deleteBookingModal.addEventListener("show.bs.modal", (event) => {
     selectedDeleteForm = document.getElementById(event.relatedTarget.dataset.deleteForm);
@@ -284,5 +322,13 @@
 
   confirmDeleteBooking.addEventListener("click", () => {
     if (selectedDeleteForm) selectedDeleteForm.submit();
+  });
+
+  cancelBookingModal.addEventListener("show.bs.modal", (event) => {
+    selectedCancelForm = document.getElementById(event.relatedTarget.dataset.cancelForm);
+  });
+
+  confirmCancelBooking.addEventListener("click", () => {
+    if (selectedCancelForm) selectedCancelForm.submit();
   });
 </script>
