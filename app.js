@@ -22,6 +22,7 @@ const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js"); 
 const bookingRouter = require("./routes/booking.js");
+const aiRouter = require("./routes/ai.js");
 const listingController = require("./controllers/listing.js");
 
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
@@ -135,6 +136,7 @@ app.get("/", listingController.index);
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/listings", bookingRouter);
+app.use("/ai", aiRouter);
 app.use("/", userRouter);
 
 app.use((req, res, next) => {

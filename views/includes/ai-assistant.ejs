@@ -1,0 +1,40 @@
+<button class="ai-launcher" id="aiLauncher" type="button" aria-controls="aiPanel" aria-label="Open WanderNest AI Assistant">
+  <i class="fa-solid fa-message"></i>
+  <span>WanderNest AI</span>
+</button>
+
+<section class="ai-panel" id="aiPanel" hidden aria-label="WanderNest AI Assistant">
+  <div class="ai-header">
+    <div class="ai-header-title">
+      <div class="ai-avatar"><i class="fa-solid fa-sparkles"></i></div>
+      <div>
+        <strong>WanderNest AI</strong>
+        <small>Your travel assistant</small>
+      </div>
+    </div>
+    <button class="ai-close" id="aiClose" type="button" aria-label="Close assistant">
+      <i class="fa-solid fa-xmark"></i>
+    </button>
+  </div>
+
+  <div class="ai-messages" id="aiMessages" aria-live="polite">
+    <div class="ai-message bot">Hi! I can help you find a stay by destination, budget, or category.</div>
+  </div>
+
+  <div class="ai-prompts" aria-label="Suggested questions">
+    <button class="ai-prompt" type="button" data-ai-prompt="Suggest a stay in Goa under ₹5000">Goa under ₹5000</button>
+    <button class="ai-prompt" type="button" data-ai-prompt="Show me a family-friendly stay">Family stay</button>
+    <button class="ai-prompt" type="button" data-ai-prompt="Plan a 3 day trip">Plan my trip</button>
+  </div>
+
+  <form class="ai-form" id="aiForm">
+    <input class="ai-input" id="aiInput" type="text" maxlength="500" placeholder="Ask about your next stay..." autocomplete="off">
+    <button class="ai-mic" id="aiMic" type="button" aria-label="Speak your question" title="Speak your question" aria-pressed="false">
+      <i class="fa-solid fa-microphone"></i>
+    </button>
+    <button class="ai-send" type="submit" aria-label="Send message" title="Send message">
+      <i class="fa-solid fa-paper-plane"></i>
+    </button>
+  </form>
+  <div class="ai-voice-status" id="aiVoiceStatus" role="status" aria-live="polite"></div>
+</section>

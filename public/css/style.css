@@ -1,8 +1,20 @@
-body {
+ :root {
+     --page-bg: #ffffff;
+     --surface: #ffffff;
+     --surface-muted: #f8f9fa;
+     --text-main: #222222;
+     --text-muted: #6c757d;
+     --border-soft: rgba(0, 0, 0, 0.08);
+ }
+
+ body {
      font-family: "Plus Jakarta Sans", sans-serif !important;
      display: flex;
      flex-direction: column;
      min-height: 100vh;
+     background-color: var(--page-bg);
+     color: var(--text-main);
+     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 img {
@@ -14,7 +26,7 @@ img {
 }
  .navbar {
     min-height: 5rem;
-    background-color: white;
+    background-color: var(--surface) !important;
     padding-top: 0.75rem;
     padding-bottom: 0.75rem;
     gap: 0.75rem;
@@ -26,7 +38,7 @@ img {
  }
 
  .nav-link {
-    color: #222222 !important;
+     color: var(--text-main) !important;
  }
 
 /* Search / Navbar responsiveness */
@@ -52,7 +64,7 @@ img {
  /* Footer */
  .f-info-links a {
 text-decoration: none;
-color: #222222;
+color: var(--text-main);
  }
 
  .f-info-links a:hover {
@@ -76,7 +88,7 @@ text-decoration: underline;
     text-align: center;
     display: flex;
      min-height: 8rem;
-    background-color: #ebebeb;
+    background-color: var(--surface-muted);
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -363,4 +375,132 @@ text-decoration: underline;
         align-items: flex-start !important;
         gap: 0.2rem;
     }
+}
+
+.card,
+.form-control,
+.form-select,
+.modal-content,
+.dropdown-menu {
+    background-color: var(--surface);
+    color: var(--text-main);
+}
+
+.form-control,
+.form-select {
+    border-color: var(--border-soft);
+}
+
+.form-control::placeholder {
+    color: var(--text-muted);
+}
+
+[data-theme="dark"] {
+    --page-bg: #111827;
+    --surface: #1f2937;
+    --surface-muted: #0f172a;
+    --text-main: #f3f4f6;
+    --text-muted: #cbd5e1;
+    --border-soft: rgba(255, 255, 255, 0.14);
+    --bs-body-bg: #111827;
+    --bs-body-color: #f3f4f6;
+    --bs-secondary-color: #cbd5e1;
+    --bs-border-color: rgba(255, 255, 255, 0.14);
+}
+
+[data-theme="dark"] body,
+[data-theme="dark"] .container,
+[data-theme="dark"] .container-fluid {
+    background-color: var(--page-bg);
+    color: var(--text-main);
+}
+
+[data-theme="dark"] .bg-body-light,
+[data-theme="dark"] .bg-body,
+[data-theme="dark"] .card,
+[data-theme="dark"] .list-group-item {
+    background-color: var(--surface) !important;
+    color: var(--text-main);
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6,
+[data-theme="dark"] p,
+[data-theme="dark"] label,
+[data-theme="dark"] .card-text {
+    color: var(--text-main);
+}
+
+[data-theme="dark"] a:not(.btn):not(.ai-listing-link) {
+    color: #fca5a5;
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select,
+[data-theme="dark"] textarea {
+    background-color: #1f2937;
+    color: #f3f4f6 !important;
+    caret-color: #f3f4f6;
+}
+
+[data-theme="dark"] .form-control::placeholder,
+[data-theme="dark"] .form-select::placeholder,
+[data-theme="dark"] textarea::placeholder,
+[data-theme="dark"] input::placeholder {
+    color: #cbd5e1 !important;
+    opacity: 1;
+}
+
+[data-theme="dark"] input[type="file"] {
+    color: #f3f4f6 !important;
+}
+
+[data-theme="dark"] input[type="file"]::file-selector-button {
+    background-color: #f8fafc;
+    color: #111827;
+    border-color: #cbd5e1;
+}
+
+[data-theme="dark"] .navbar-toggler {
+    border-color: #64748b;
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .form-text {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .theme-toggle {
+    border-color: #64748b;
+    color: #facc15;
+}
+
+[data-theme="dark"] .btn-light {
+    border-color: #64748b;
+    background-color: #334155;
+    color: #f8fafc;
+}
+
+[data-theme="dark"] .btn-outline-dark {
+    border-color: #cbd5e1;
+    color: #f8fafc;
+}
+
+[data-theme="dark"] .btn-outline-dark:hover {
+    background-color: #f8fafc;
+    color: #111827;
+}
+
+[data-theme="dark"] .alert-warning {
+    background-color: #422006;
+    border-color: #92400e;
+    color: #fef3c7;
 }

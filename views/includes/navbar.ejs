@@ -44,6 +44,23 @@
     color: #fe424d;
   }
 
+  .theme-toggle {
+    width: 2.25rem;
+    height: 2.25rem;
+    display: inline-grid;
+    place-items: center;
+    margin-left: 0.35rem;
+    border: 1px solid #d1d5db;
+    border-radius: 50%;
+    background: transparent;
+    color: #222;
+  }
+
+  .theme-toggle:hover {
+    border-color: #fe424d;
+    color: #fe424d;
+  }
+
   @media (max-width: 767.98px) {
     .auth-links {
       align-items: flex-start;
@@ -85,6 +102,9 @@
 
       <div class="navbar-nav ms-auto auth-links">
         <a class="nav-link" href="/listings/new">Airbnb your home</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
+          <i class="fa-solid fa-moon"></i>
+        </button>
         <% if(!currUser) { %>
           <a class="nav-link " href="/signup"><b>Sign up</b></a>
           <a class="nav-link" href="/login"><b>Log in</b></a>
