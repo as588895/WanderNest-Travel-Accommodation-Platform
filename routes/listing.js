@@ -35,6 +35,7 @@ router.route("/")
 //New Route
  router.get("/new",isLoggedIn, listingController.renderNewForm);
 router.get("/wishlist", isLoggedIn, wrapAsync(listingController.renderWishlist));
+router.get("/orders", isLoggedIn, wrapAsync(listingController.renderOrders));
 router.post("/:id/wishlist", isLoggedIn, wrapAsync(listingController.addToWishlist));
 router.delete("/:id/wishlist", isLoggedIn, wrapAsync(listingController.removeFromWishlist));
 

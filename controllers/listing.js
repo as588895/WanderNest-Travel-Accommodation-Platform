@@ -1,5 +1,6 @@
 const Listing = require("../models/listing.js");
 const User = require("../models/user.js");
+const Booking = require("../models/booking.js");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -159,6 +160,14 @@ module.exports.renderWishlist = async (req, res) => {
         wishlistIds,
         isWishlistPage: true,
     });
+};
+
+module.exports.renderOrders = async (req, res) => {
+    const bookings = await Booking.find({ user: req.user._id })
+        .populate("listing")
+        .sort({ createdAt: -1 });
+
+    res.render("bookings/orders.ejs", { bookings });
 };
 
 module.exports.addToWishlist = async (req, res) => {

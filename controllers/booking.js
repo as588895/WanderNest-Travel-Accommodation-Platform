@@ -237,3 +237,11 @@ module.exports.renderBookingSuccess = async (req, res) => {
 
     res.render("bookings/success.ejs", { booking });
 };
+
+module.exports.renderMyOrders = async (req, res) => {
+    const bookings = await Booking.find({ user: req.user._id })
+        .populate("listing")
+        .sort({ createdAt: -1 });
+
+    res.render("bookings/orders.ejs", { bookings });
+};

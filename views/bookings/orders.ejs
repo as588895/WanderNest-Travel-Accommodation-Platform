@@ -1,0 +1,233 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .orders-page {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .order-card {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.04);
+  }
+
+  .order-card:hover {
+    transform: translateY(-1px);
+    transition: 0.2s ease;
+  }
+
+  .order-image {
+    height: 100%;
+    min-height: 210px;
+    object-fit: cover;
+  }
+
+  .order-body {
+    padding: 1.25rem 1.4rem;
+  }
+
+  .order-topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .order-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .order-location {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .order-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(140px, 1fr));
+    gap: 0.8rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .meta-box {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .meta-label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 0.3rem;
+  }
+
+  .meta-value {
+    font-weight: 600;
+    color: #111827;
+    font-size: 0.92rem;
+  }
+
+  .order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 0.45rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
+
+  .status-confirmed {
+    background: #e7f9ee;
+    color: #198754;
+  }
+
+  .status-pending {
+    background: #fff4d8;
+    color: #a16207;
+  }
+
+  .status-cancelled {
+    background: #fde7e7;
+    color: #dc3545;
+  }
+
+  .payment-status {
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+
+  .order-total {
+    text-align: right;
+  }
+
+  .total-label {
+    display: block;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: #6c757d;
+    margin-bottom: 0.2rem;
+  }
+
+  .total-value {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .orders-empty {
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.03);
+  }
+
+  @media (max-width: 767.98px) {
+    .order-meta {
+      grid-template-columns: 1fr;
+    }
+
+    .order-topbar,
+    .order-footer {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .order-total {
+      text-align: left;
+    }
+  }
+</style>
+
+<div class="container py-4 orders-page">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">My Orders</h2>
+    <span class="badge text-bg-dark rounded-pill px-3 py-2"><%= bookings.length %> booking(s)</span>
+  </div>
+
+  <% if (!bookings.length) { %>
+    <div class="card orders-empty">
+      <div class="card-body text-center py-5">
+        <h5 class="text-muted mb-2">No bookings yet</h5>
+        <p class="mb-0 text-muted">Your booked stays will appear here.</p>
+      </div>
+    </div>
+  <% } else { %>
+    <div class="d-flex flex-column gap-3">
+      <% for (let booking of bookings) { %>
+        <div class="order-card">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-3">
+              <img src="<%= booking.listing.image.url %>" alt="<%= booking.listing.title %>" class="order-image w-100">
+            </div>
+
+            <div class="col-md-9">
+              <div class="order-body">
+                <div class="order-topbar">
+                  <div>
+                    <h5 class="order-title"><%= booking.listing.title %></h5>
+                    <div class="order-location"><%= booking.listing.location %>, <%= booking.listing.country %></div>
+                  </div>
+
+                  <% let statusClass = 'status-pending'; %>
+                  <% if (booking.bookingStatus === 'confirmed') statusClass = 'status-confirmed'; %>
+                  <% if (booking.bookingStatus === 'cancelled') statusClass = 'status-cancelled'; %>
+                  <span class="status-badge <%= statusClass %>"><%= booking.bookingStatus %></span>
+                </div>
+
+                <div class="order-meta">
+                  <div class="meta-box">
+                    <span class="meta-label">Check-in</span>
+                    <span class="meta-value"><%= booking.checkIn.toDateString() %></span>
+                  </div>
+                  <div class="meta-box">
+                    <span class="meta-label">Check-out</span>
+                    <span class="meta-value"><%= booking.checkOut.toDateString() %></span>
+                  </div>
+                  <div class="meta-box">
+                    <span class="meta-label">Guests</span>
+                    <span class="meta-value"><%= booking.guests %> guest(s)</span>
+                  </div>
+                </div>
+
+                <div class="order-footer">
+                  <div>
+                    <small class="text-muted d-block mb-1">Payment</small>
+                    <span class="payment-status"><%= booking.paymentStatus %></span>
+                  </div>
+
+                  <div class="order-total">
+                    <span class="total-label">Total</span>
+                    <span class="total-value">₹<%= booking.totalPrice.toLocaleString("en-IN") %></span>
+                  </div>
+
+                  <a href="/listings/<%= booking.listing._id %>" class="btn btn-outline-dark btn-sm rounded-pill">View listing</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  <% } %>
+</div>
