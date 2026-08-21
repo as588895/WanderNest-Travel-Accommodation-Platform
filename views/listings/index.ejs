@@ -13,6 +13,34 @@
         padding-bottom: 0.25rem;
       }
 
+      .filters-toggle {
+        display: none;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid var(--border-soft);
+        border-radius: 0.65rem;
+        background: var(--surface);
+        color: var(--text-main);
+        padding: 0.65rem 0.85rem;
+        font-weight: 600;
+      }
+
+      .filters-toggle:hover {
+        border-color: #fe424d;
+        color: #fe424d;
+      }
+
+      .filters-toggle-icon {
+        font-size: 1.1rem;
+      }
+
+      @media (min-width: 768px) {
+        .filters-collapse {
+          display: block !important;
+        }
+      }
+
       #filters::-webkit-scrollbar {
         display: none;
 }
@@ -68,7 +96,15 @@
         }
       }
 
-      @media (max-width: 575.98px) {
+      @media (max-width: 767.98px) {
+        .filters-toggle {
+          display: flex;
+        }
+
+        .filters-collapse {
+          margin-top: 0.6rem;
+        }
+
         #filters {
           gap: 0.5rem;
         }
@@ -93,7 +129,20 @@
     </style>
 
   <% if (!isWishlistPage) { %>
-  <div id="filters">
+  <button
+    class="filters-toggle"
+    type="button"
+    data-bs-toggle="collapse"
+    data-bs-target="#listingFilters"
+    aria-controls="listingFilters"
+    aria-expanded="false"
+  >
+    <span>Explore categories &amp; filters</span>
+    <i class="fa-solid fa-bars filters-toggle-icon" aria-hidden="true"></i>
+  </button>
+
+  <div class="collapse filters-collapse" id="listingFilters">
+    <div id="filters">
 
     <a href="/listings?category=Trending" class="filter">
       <div class="filter">
@@ -159,6 +208,7 @@
       </div>
 
     </div>
+  </div>
     <% } %>
 
     <% if (isWishlistPage) { %>
