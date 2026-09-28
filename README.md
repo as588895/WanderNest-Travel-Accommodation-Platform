@@ -14,6 +14,11 @@
     <img src="https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github" />
   </a>
 
+  <a href="https://www.aman-singh.dev/">
+    <img src="https://img.shields.io/badge/💼_Portfolio-Aman_Singh-0A66C2?style=for-the-badge" />
+  </a>
+
+
 </p>
 
 ---
