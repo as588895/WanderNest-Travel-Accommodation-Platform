@@ -4,35 +4,40 @@
     color: #fff;
     border-radius: 25px;
     padding: 0.5rem 1rem;
-    
   }
-  .search-btn:hover{
-     background-color: #fe424d;
-     color: #fff;
+
+  .search-btn:hover {
+    background-color: #fe424d;
+    color: #fff;
   }
+
   .search-btn i {
     display: inline;
     margin-right: 0.5rem;
   }
+
   .search-input {
     border-radius: 25px;
     padding: 0.5rem 1rem;
     font-size: 1rem;
     display: block;
   }
-  .auth-links{
+
+  .auth-links {
     display: flex;
     align-items: center;
     gap: 0.1rem;
-}
+  }
 
-.auth-links .nav-link{
+  .auth-links .nav-link {
     white-space: nowrap;
     width: max-content;
-}
+  }
+
   .logout-form {
     margin: 0;
   }
+
   .logout-btn {
     background: transparent;
     border: 0;
@@ -61,7 +66,105 @@
     color: #fe424d;
   }
 
+
+  /* =========================================
+     USER DROPDOWN
+     ========================================= */
+
+  .user-dropdown {
+    position: relative;
+  }
+
+  .user-dropdown-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    border: 0;
+    background: transparent;
+    padding: 0.5rem 0.4rem;
+    font-weight: 700;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .user-dropdown-toggle:hover {
+    color: #fe424d;
+  }
+
+  .user-dropdown-toggle i {
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
+  }
+
+  .user-dropdown.show .user-dropdown-toggle i {
+    transform: rotate(180deg);
+  }
+
+  .user-dropdown-menu {
+    min-width: 190px;
+    padding: 0.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+  }
+
+  .user-dropdown-header {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.85rem;
+    color: #777;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 0.35rem;
+  }
+
+  .user-dropdown-header strong {
+    display: block;
+    color: #222;
+    font-size: 0.95rem;
+    margin-top: 2px;
+  }
+
+  .user-dropdown-menu .dropdown-item {
+    border-radius: 8px;
+    padding: 0.55rem 0.7rem;
+    font-weight: 600;
+  }
+
+  .user-dropdown-menu .dropdown-item:hover {
+    background-color: #fff1f2;
+    color: #fe424d;
+  }
+
+  .user-dropdown-menu .logout-dropdown-btn {
+    border: 0;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+  }
+
+
+  /* =========================================
+     LOGIN / SIGNUP
+     ========================================= */
+
+  .auth-links .auth-login,
+  .auth-links .auth-signup {
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .auth-links .auth-signup:hover,
+  .auth-links .auth-login:hover {
+    color: #fe424d;
+  }
+
+
+  /* =========================================
+     MOBILE
+     ========================================= */
+
   @media (max-width: 767.98px) {
+
     .auth-links {
       align-items: flex-start;
       width: 100%;
@@ -72,23 +175,68 @@
       padding-top: 0.35rem;
       padding-bottom: 0.35rem;
     }
+
+    .user-dropdown {
+      width: 100%;
+    }
+
+    .user-dropdown-toggle {
+      padding-left: 0;
+    }
+
+    .user-dropdown-menu {
+      position: static !important;
+      width: 100%;
+      margin-top: 0.25rem;
+    }
   }
 </style>
 
+
 <nav class="navbar navbar-expand-md bg-body-light border-bottom sticky-top">
+
   <div class="container-fluid">
-    <a class="navbar-brand" href="/listings"><i class="fa-regular fa-compass"></i></a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup">
+
+    <!-- Brand -->
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-regular fa-compass"></i>
+    </a>
+
+
+    <!-- Mobile Toggle -->
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNavAltMarkup"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
+
+
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+
+
+      <!-- Left Navbar -->
       <div class="navbar-nav">
 
-        <a class="nav-link" href="/listings">Explore</a>
+        <a class="nav-link" href="/listings">
+          Explore
+        </a>
+
       </div>
 
+
+      <!-- Search -->
       <div class="navbar-nav ms-auto">
-        <form class="search-form" role="search" action="/listings" method="GET">
+
+        <form
+          class="search-form"
+          role="search"
+          action="/listings"
+          method="GET"
+        >
+
           <input
             class="form-control me-2 search-input"
             type="search"
@@ -96,29 +244,181 @@
             value="<%= locals.searchQuery || '' %>"
             placeholder="Search destinations"
           />
-          <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+
+          <button
+            class="btn search-btn"
+            type="submit"
+          >
+
+            <i class="fa-solid fa-magnifying-glass"></i>
+
+            Search
+
+          </button>
+
         </form>
+
       </div>
 
+
+      <!-- Right Navbar -->
       <div class="navbar-nav ms-auto auth-links">
-        <a class="nav-link" href="/listings/new">Airbnb your home</a>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark mode" title="Switch to dark mode">
-          <i class="fa-solid fa-moon"></i>
-        </button>
-        <% if(!currUser) { %>
-          <a class="nav-link " href="/signup"><b>Sign up</b></a>
-          <a class="nav-link" href="/login"><b>Log in</b></a>
-          <% } %>
-            <% if(currUser) { %>
-              <a class="nav-link wishlist-nav" href="/listings/wishlist"><i class="fa-solid fa-heart"></i> Wishlist</a>
-              <a class="nav-link" href="/listings/orders">My Orders</a>
-              <form class="logout-form" action="/logout" method="POST">
-                <button class="nav-link logout-btn" type="submit">Log out</button>
-              </form>
-              <% } %>
-      </div>
 
+
+        <!-- Airbnb Your Home -->
+        <a
+          class="nav-link"
+          href="/listings/new"
+        >
+          Airbnb your home
+        </a>
+
+
+        <!-- Theme Toggle -->
+        <button
+          class="theme-toggle"
+          id="themeToggle"
+          type="button"
+          aria-label="Switch to dark mode"
+          title="Switch to dark mode"
+        >
+
+          <i class="fa-solid fa-moon"></i>
+
+        </button>
+
+
+        <% if(currUser) { %>
+
+          <!-- =========================================
+               LOGGED IN USER
+               ========================================= -->
+
+
+          <!-- Wishlist -->
+          <a
+            class="nav-link wishlist-nav"
+            href="/listings/wishlist"
+          >
+
+            <i class="fa-solid fa-heart"></i>
+
+            Wishlist
+
+          </a>
+
+
+          <!-- My Orders -->
+          <a
+            class="nav-link"
+            href="/listings/orders"
+          >
+
+            My Orders
+
+          </a>
+
+
+          <!-- User Dropdown -->
+          <div class="dropdown user-dropdown">
+
+            <button
+              class="user-dropdown-toggle dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+
+              <i class="fa-regular fa-circle-user"></i>
+
+              <span>
+                <%= currUser.username %>
+              </span>
+
+            </button>
+
+
+            <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
+
+
+              <!-- Username -->
+              <li class="user-dropdown-header">
+
+                Logged in as
+
+                <strong>
+                  <%= currUser.username %>
+                </strong>
+
+              </li>
+
+
+              <!-- Logout -->
+              <li>
+
+                <form
+                  action="/logout"
+                  method="POST"
+                  class="logout-form"
+                >
+
+                  <button
+                    type="submit"
+                    class="dropdown-item logout-dropdown-btn"
+                  >
+
+                    <i class="fa-solid fa-right-from-bracket me-2"></i>
+
+                    Logout
+
+                  </button>
+
+                </form>
+
+              </li>
+
+            </ul>
+
+          </div>
+
+
+        <% } else { %>
+
+
+          <!-- =========================================
+               LOGGED OUT USER
+               ========================================= -->
+
+
+          <!-- Signup -->
+          <a
+            class="nav-link auth-signup"
+            href="/signup"
+          >
+
+            <b>Sign up</b>
+
+          </a>
+
+
+          <!-- Login -->
+          <a
+            class="nav-link auth-login"
+            href="/login"
+          >
+
+            <b>Log in</b>
+
+          </a>
+
+
+        <% } %>
+
+
+      </div>
 
     </div>
+
   </div>
+
 </nav>
