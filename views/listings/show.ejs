@@ -106,7 +106,193 @@
       </div>
       <% }  %>  
     </div>
-         <!-- Mapbox Code -->
+
+    <!-- RealityCheck Feedback Display Section -->
+    <% if(typeof realityCheckFeedback !== 'undefined' && realityCheckFeedback && realityCheckFeedback.length > 0) { %>
+      <div class="col-12 col-lg-10 col-xl-8 mx-auto mb-4">
+        <hr />
+        <h4 style="margin-bottom: 20px;">
+          <i class="fas fa-check-circle"></i> Guest Stay Experience Feedback
+        </h4>
+        <p style="margin-bottom: 20px; font-size: 14px; opacity: 0.8;">
+          Real feedback from guests who have stayed here, helping you understand how this property compares to its listing description.
+        </p>
+
+        <% realityCheckFeedback.forEach((feedback, index) => { %>
+          <div class="card mb-4 feedback-card" style="border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+            <div class="card-body">
+              <!-- Header -->
+              <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 15px;">
+                <div>
+                  <h5 class="card-title mb-2">
+                    <i class="fas fa-user-circle"></i> <%= feedback.user.username %>
+                  </h5>
+                  <p style="font-size: 13px; margin: 0; opacity: 0.7;">
+                    Stayed: <%= new Date(feedback.booking.checkIn).toLocaleDateString("en-IN") %> to <%= new Date(feedback.booking.checkOut).toLocaleDateString("en-IN") %>
+                  </p>
+                </div>
+                <span class="feedback-date-badge" style="padding: 6px 12px; border-radius: 20px; font-size: 12px;">
+                  <%= new Date(feedback.createdAt).toLocaleDateString("en-IN") %>
+                </span>
+              </div>
+              <% if(currUser && feedback.user && feedback.user._id.toString() === currUser._id.toString()) { %>
+                <a href="/reality-check-feedback/<%= feedback._id %>/edit" class="btn btn-sm btn-outline-primary mb-3">
+                  <i class="fas fa-edit"></i> Edit your feedback
+                </a>
+              <% } %>
+
+              <!-- Ratings Display -->
+              <div class="feedback-ratings-section" style="padding: 15px; border-radius: 6px; margin: 15px 0;">
+                <h6 style="font-weight: 600; margin-bottom: 12px;">Experience Ratings:</h6>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px;">
+                  <!-- Cleanliness -->
+                  <div class="rating-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <span>🧹 Cleanliness</span>
+                    <span style="color: #ffc107;">
+                      <% for(let i = 0; i < feedback.ratings.cleanliness; i++) { %>★<% } %>
+                      <% for(let i = feedback.ratings.cleanliness; i < 5; i++) { %>☆<% } %>
+                      <small style="color: inherit; margin-left: 4px;"><%= feedback.ratings.cleanliness %>/5</small>
+                    </span>
+                  </div>
+
+                  <!-- Wi-Fi Quality -->
+                  <div class="rating-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <span>📶 Wi-Fi Quality</span>
+                    <span style="color: #ffc107;">
+                      <% for(let i = 0; i < feedback.ratings.wifiQuality; i++) { %>★<% } %>
+                      <% for(let i = feedback.ratings.wifiQuality; i < 5; i++) { %>☆<% } %>
+                      <small style="color: inherit; margin-left: 4px;"><%= feedback.ratings.wifiQuality %>/5</small>
+                    </span>
+                  </div>
+
+                  <!-- Parking -->
+                  <div class="rating-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <span>🅿️ Parking</span>
+                    <span style="color: #ffc107;">
+                      <% for(let i = 0; i < feedback.ratings.parkingAvailability; i++) { %>★<% } %>
+                      <% for(let i = feedback.ratings.parkingAvailability; i < 5; i++) { %>☆<% } %>
+                      <small style="color: inherit; margin-left: 4px;"><%= feedback.ratings.parkingAvailability %>/5</small>
+                    </span>
+                  </div>
+
+                  <!-- Road Access -->
+                  <div class="rating-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <span>🛣️ Road Access</span>
+                    <span style="color: #ffc107;">
+                      <% for(let i = 0; i < feedback.ratings.roadAccessibility; i++) { %>★<% } %>
+                      <% for(let i = feedback.ratings.roadAccessibility; i < 5; i++) { %>☆<% } %>
+                      <small style="color: inherit; margin-left: 4px;"><%= feedback.ratings.roadAccessibility %>/5</small>
+                    </span>
+                  </div>
+
+                  <!-- Location Accuracy -->
+                  <div class="rating-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <span>📍 Location Accuracy</span>
+                    <span style="color: #ffc107;">
+                      <% for(let i = 0; i < feedback.ratings.locationAccuracy; i++) { %>★<% } %>
+                      <% for(let i = feedback.ratings.locationAccuracy; i < 5; i++) { %>☆<% } %>
+                      <small style="color: inherit; margin-left: 4px;"><%= feedback.ratings.locationAccuracy %>/5</small>
+                    </span>
+                  </div>
+
+                  <!-- Amenities Accuracy -->
+                  <div class="rating-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <span>✨ Amenities Accuracy</span>
+                    <span style="color: #ffc107;">
+                      <% for(let i = 0; i < feedback.ratings.amenitiesAccuracy; i++) { %>★<% } %>
+                      <% for(let i = feedback.ratings.amenitiesAccuracy; i < 5; i++) { %>☆<% } %>
+                      <small style="color: inherit; margin-left: 4px;"><%= feedback.ratings.amenitiesAccuracy %>/5</small>
+                    </span>
+                  </div>
+
+                  <!-- Host Experience -->
+                  <div class="rating-item" style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <span>👤 Host Experience</span>
+                    <span style="color: #ffc107;">
+                      <% for(let i = 0; i < feedback.ratings.hostExperience; i++) { %>★<% } %>
+                      <% for(let i = feedback.ratings.hostExperience; i < 5; i++) { %>☆<% } %>
+                      <small style="color: inherit; margin-left: 4px;"><%= feedback.ratings.hostExperience %>/5</small>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Listing Accuracy -->
+              <div style="margin: 15px 0;">
+                <h6 style="font-weight: 600; margin-bottom: 8px;">Did the property match the listing?</h6>
+                <% 
+                  let accuracyText = "";
+                  let accuracyColor = "";
+                  
+                  if(feedback.listingAccuracy === "better_than_expected") {
+                    accuracyText = "👍 Better than expected";
+                    accuracyColor = "#28a745";
+                  } else if(feedback.listingAccuracy === "as_described") {
+                    accuracyText = "✅ As described";
+                    accuracyColor = "#007bff";
+                  } else if(feedback.listingAccuracy === "partially_different") {
+                    accuracyText = "⚠️ Partially different";
+                    accuracyColor = "#ffc107";
+                  } else if(feedback.listingAccuracy === "significantly_different") {
+                    accuracyText = "❌ Significantly different";
+                    accuracyColor = "#dc3545";
+                  }
+                %>
+                <p style="color: <%= accuracyColor %>; font-weight: 600; margin: 0; padding: 8px 12px; background: rgba(0,0,0,0.05); border-radius: 4px; display: inline-block;">
+                  <%= accuracyText %>
+                </p>
+              </div>
+
+              <!-- Comment -->
+              <% if(feedback.comment) { %>
+                <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                  <h6 style="font-weight: 600; margin-bottom: 8px;">Guest Comment:</h6>
+                  <p style="color: #333; line-height: 1.6; margin: 0;">
+                    "<%= feedback.comment %>"
+                  </p>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% }); %>
+        
+        <hr />
+      </div>
+    <% } %>
+    
+    <!-- RealityCheck Feedback Section -->
+    <% if(currUser && userCompletedBookings && userCompletedBookings.length > 0) { %>
+      <div class="col-12 col-lg-10 col-xl-8 mx-auto mb-4">
+        <hr />
+        <h4>
+          <i class="fas fa-comment-star"></i> Share Your Stay Experience
+        </h4>
+        <p class="text-muted">Help bridge the gap between listings and reality. Share your structured feedback about this property.</p>
+        
+        <div class="alert alert-light border">
+          <h6 class="alert-heading">
+            <i class="fas fa-star"></i> How was your actual stay?
+          </h6>
+          <p class="mb-2">Rate your experience across key categories:</p>
+          <ul class="mb-3 small">
+            <li>Cleanliness</li>
+            <li>Wi-Fi Quality</li>
+            <li>Parking Availability</li>
+            <li>Road/Location Accessibility</li>
+            <li>Location Accuracy</li>
+            <li>Amenities Accuracy</li>
+            <li>Host Experience</li>
+          </ul>
+          <% userCompletedBookings.forEach((booking) => { %>
+            <a href="/bookings/<%= booking._id %>/reality-check-feedback" class="btn btn-outline-primary btn-sm">
+              <i class="fas fa-pencil-alt"></i> Submit Feedback for <%= new Date(booking.checkIn).toLocaleDateString("en-IN") %>
+            </a>
+          <% }); %>
+        </div>
+        <hr />
+      </div>
+    <% } %>         <!-- Mapbox Code -->
     <div class="col-12 col-lg-10 col-xl-8 mx-auto mb-3">
         <h3>Where you'll be</h3>
         <div id="map"></div>
@@ -114,6 +300,58 @@
     
 
 </div>
+
+<style>
+  /* Dark mode support for feedback section */
+  [data-theme="dark"] .feedback-card {
+    background-color: #2a2a2a !important;
+    border: 1px solid #444 !important;
+  }
+
+  [data-theme="dark"] .feedback-ratings-section {
+    background-color: #333 !important;
+  }
+
+  [data-theme="dark"] .rating-item {
+    border-bottom-color: #444 !important;
+  }
+
+  [data-theme="dark"] .feedback-date-badge {
+    background-color: #444 !important;
+    color: #e0e0e0 !important;
+  }
+
+  [data-theme="dark"] .card-title {
+    color: #fff !important;
+  }
+
+  [data-theme="dark"] .card-body {
+    color: #e0e0e0;
+  }
+
+  /* Light mode defaults */
+  .feedback-card {
+    border: 1px solid #e0e0e0;
+    background-color: #fff;
+  }
+
+  .feedback-ratings-section {
+    background-color: #f9f9f9;
+  }
+
+  .rating-item {
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .feedback-date-badge {
+    background-color: #f0f0f0;
+    color: #666;
+  }
+
+  h4, h5, h6 {
+    color: inherit;
+  }
+</style>
 
 <script src="/js/map.js"></script>
 

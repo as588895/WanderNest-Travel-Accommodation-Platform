@@ -1,30 +1,341 @@
 <% layout("/layouts/boilerplate") %>
 
-<div class="row mt-3">
-  <h1 class="col-6 offset-3">SignUp on WanderNest</h1>
-  <div class="col-6 offset-3">
-        <form action="/signup" method="POST" class="needs-validation" novalidate>
-        <!-- username -->
-          <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input name="username" id="username" type="text" class="form-control" required>
-            <div class="valid-feedback">Looks good!</div>
-          </div>
+<div class="auth-page">
+  <div class="auth-container">
+    <!-- Left Travel Section -->
+    <div class="auth-visual signup-visual">
+      <div class="auth-overlay"></div>
 
-          <!-- email -->
-          <div class="mb-3">
-            <label for="email" class="form-label">Email</label>
-            <input name="email" id="email" type="email" class="form-control" required>
-          </div>
+      <div class="auth-brand">
+        <div class="brand-icon">
+          <i class="fa-solid fa-compass"></i>
+        </div>
 
-          <!-- password -->
-          <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input name="password" id="password" type="password" class="form-control" required>
-          </div>
+        <h1>WanderNest</h1>
 
-          <button class="btn btn-success">SignUp</button>
-        </form>
+        <p>
+          Your next adventure
+          <br />
+          is just one click away.
+        </p>
+      </div>
+
+      <div class="travel-badge">
+        <i class="fa-solid fa-plane-departure"></i>
+
+        Start exploring today
+      </div>
     </div>
+
+    <!-- Signup Form -->
+    <div class="auth-form-section">
+      <div class="auth-form-wrapper">
+        <div class="mobile-brand">
+          <div class="brand-icon">
+            <i class="fa-solid fa-compass"></i>
+          </div>
+
+          <span>WanderNest</span>
+        </div>
+
+        <div class="auth-heading">
+          <span class="auth-small-title"> Start your journey </span>
+
+          <h2>Create your account</h2>
+
+          <p>Join WanderNest and discover amazing stays.</p>
+        </div>
+
+        <form
+          action="/signup"
+          method="POST"
+          class="auth-form needs-validation"
+          novalidate
+        >
+          <!-- Username -->
+          <div class="auth-input-group">
+            <label for="username"> Username </label>
+
+            <div class="auth-input-wrapper">
+              <i class="fa-regular fa-user"></i>
+
+              <input
+                type="text"
+                name="username"
+                id="username"
+                placeholder="Choose a username"
+                autocomplete="username"
+                minlength="3"
+                required
+              />
+            </div>
+
+            <div class="invalid-feedback">
+              Username must be at least 3 characters.
+            </div>
+          </div>
+
+          <!-- Email -->
+          <div class="auth-input-group">
+            <label for="email"> Email address </label>
+
+            <div class="auth-input-wrapper">
+              <i class="fa-regular fa-envelope"></i>
+
+              <input
+                type="email"
+                name="email"
+                id="email"
+                placeholder="Enter your email"
+                autocomplete="email"
+                required
+              />
+            </div>
+
+            <div class="invalid-feedback">
+              Please enter a valid email address.
+            </div>
+          </div>
+
+          <!-- Password -->
+          <!-- Password -->
+          <div class="auth-input-group">
+            <label for="password"> Password </label>
+
+            <div class="auth-input-wrapper">
+              <i class="fa-solid fa-lock"></i>
+
+              <input
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Create a password"
+                autocomplete="new-password"
+                required
+              />
+
+              <button
+                type="button"
+                class="password-toggle"
+                onclick="togglePassword('password', this)"
+              >
+                <i class="fa-regular fa-eye"></i>
+              </button>
+            </div>
+
+            <!-- Password Strength -->
+            <div id="password-strength" class="password-strength">
+              <span id="password-strength-text"></span>
+            </div>
+
+            <div class="password-requirements">
+              <span id="length-check">
+                <i class="fa-solid fa-circle"></i> 6+ characters
+              </span>
+
+              <span id="uppercase-check">
+                <i class="fa-solid fa-circle"></i> Uppercase
+              </span>
+
+              <span id="number-check">
+                <i class="fa-solid fa-circle"></i> Number
+              </span>
+
+              <span id="special-check">
+                <i class="fa-solid fa-circle"></i> Special character
+              </span>
+            </div>
+          </div>
+
+          <!-- Signup Button -->
+          <button type="submit" class="auth-submit-btn">
+            <span>Create Account</span>
+
+            <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </form>
+
+        <!-- Login -->
+        <div class="auth-switch">
+          <span>Already have an account?</span>
+
+          <a href="/login"> Login here </a>
+        </div>
+
+        <div class="auth-divider">
+          <span>WanderNest</span>
+        </div>
+
+        <p class="auth-footer-text">Travel more. Discover more. Wander more.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
+<script>
+
+const signupForm = document.querySelector(".auth-form");
+const passwordInput = document.getElementById("password");
+
+const strengthBox = document.getElementById("password-strength");
+const strengthText = document.getElementById("password-strength-text");
+
+const lengthCheck = document.getElementById("length-check");
+const uppercaseCheck = document.getElementById("uppercase-check");
+const numberCheck = document.getElementById("number-check");
+const specialCheck = document.getElementById("special-check");
+
+
+// =========================================================
+// PASSWORD STRENGTH CHECK
+// =========================================================
+
+function checkPasswordStrength(password) {
+
+    const hasLength = password.length >= 6;
+
+    const hasUppercase = /[A-Z]/.test(password);
+
+    const hasLowercase = /[a-z]/.test(password);
+
+    const hasNumber = /[0-9]/.test(password);
+
+    const hasSpecial = /[^A-Za-z0-9]/.test(password);
+
+
+    // Update requirement indicators
+
+    lengthCheck.classList.toggle("valid", hasLength);
+
+    uppercaseCheck.classList.toggle("valid", hasUppercase);
+
+    numberCheck.classList.toggle("valid", hasNumber);
+
+    specialCheck.classList.toggle("valid", hasSpecial);
+
+
+    // Empty password
+
+    if (password.length === 0) {
+
+        strengthText.textContent = "";
+        strengthBox.className = "password-strength";
+
+        return "empty";
+    }
+
+
+    // Weak
+
+    if (password.length < 6) {
+
+        strengthText.textContent = "Weak Password";
+        strengthBox.className = "password-strength weak";
+
+        return "weak";
+    }
+
+
+    // Strong
+
+    if (
+        password.length >= 6 &&
+        hasUppercase &&
+        hasLowercase &&
+        hasNumber &&
+        hasSpecial
+    ) {
+
+        strengthText.textContent = "Strong Password";
+        strengthBox.className = "password-strength strong";
+
+        return "strong";
+    }
+
+
+    // Medium
+
+    strengthText.textContent = "Medium Password";
+    strengthBox.className = "password-strength medium";
+
+    return "medium";
+}
+
+
+// Check while typing
+
+passwordInput.addEventListener("input", function () {
+
+    checkPasswordStrength(this.value);
+
+});
+
+
+// =========================================================
+// FORM SUBMIT VALIDATION
+// =========================================================
+
+signupForm.addEventListener("submit", function (event) {
+
+    const password = passwordInput.value;
+
+    const strength = checkPasswordStrength(password);
+
+
+    // Stop signup if password is weak
+
+    if (strength === "weak" || strength === "empty") {
+
+        event.preventDefault();
+
+        passwordInput
+            .closest(".auth-input-wrapper")
+            .classList.add("password-error");
+
+        strengthText.textContent = "Weak Password";
+        strengthBox.className = "password-strength weak";
+
+        passwordInput.focus();
+
+        return;
+    }
+
+
+    // Remove error if password is valid
+
+    passwordInput
+        .closest(".auth-input-wrapper")
+        .classList.remove("password-error");
+
+});
+
+
+// =========================================================
+// SHOW / HIDE PASSWORD
+// =========================================================
+
+function togglePassword(inputId, button) {
+
+    const input = document.getElementById(inputId);
+    const icon = button.querySelector("i");
+
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+
+    }
+
+}
+
+</script>

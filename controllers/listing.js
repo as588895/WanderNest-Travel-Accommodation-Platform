@@ -1,6 +1,7 @@
 const Listing = require("../models/listing.js");
 const User = require("../models/user.js");
 const Booking = require("../models/booking.js");
+const RealityCheckFeedback = require("../models/realityCheckFeedback.js");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
 const mapToken = process.env.MAP_TOKEN;
 const geocodingClient = mbxGeocoding({ accessToken: mapToken });
@@ -59,12 +60,42 @@ module.exports.showListing = async (req, res) => {
         return res.redirect("/listings");
     }
     const wishlistIds = await getWishlistIdSet(req.user?._id);
+    
+    // Get user's completed bookings for this listing (for RealityCheck feedback submission)
+    let userCompletedBookings = [];
+    if (req.user) {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        
+        userCompletedBookings = await Booking.find({
+            user: req.user._id,
+            listing: id,
+            bookingStatus: "confirmed",
+            paymentStatus: "paid",
+            checkOut: { $lte: today }, // Stay completed
+        });
+    }
+    
+    // Get all RealityCheck feedback for this listing (to display to all users)
+    let realityCheckFeedback = [];
+    try {
+        realityCheckFeedback = await RealityCheckFeedback.find({ listing: id })
+            .populate("user", "username email")
+            .populate("booking", "checkIn checkOut")
+            .sort({ createdAt: -1 });
+    } catch (err) {
+        console.error("Error fetching RealityCheck feedback:", err);
+        realityCheckFeedback = [];
+    }
+    
     console.log(listing);
     //    res.render("listings/show.ejs", { listing });
     res.render("listings/show.ejs", {
         listing,
         mapToken: process.env.MAP_TOKEN,
         isWishlisted: wishlistIds.has(listing._id.toString()),
+        userCompletedBookings, // For RealityCheck feedback eligibility
+        realityCheckFeedback, // All feedback for this listing
     });
 };
 

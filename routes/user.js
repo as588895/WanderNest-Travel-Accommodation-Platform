@@ -45,6 +45,30 @@ router.route("/login")
     })(req, res, next);
 });
 
+// Forgot Password / Change Password
+
+router.get(
+    "/forgot-password",
+    userController.renderForgotPasswordForm
+);
+
+router.post(
+    "/forgot-password",
+    userController.forgotPasswordWithOldPassword
+);
+
+
+// Reset Password - existing functionality
+router.get(
+    "/reset-password/:token",
+    userController.renderResetPasswordForm
+);
+
+router.post(
+    "/reset-password/:token",
+    userController.resetPassword
+);
+
 router.post("/logout", userController.logout); 
 
 module.exports = router;

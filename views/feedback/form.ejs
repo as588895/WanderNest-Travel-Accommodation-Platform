@@ -1,0 +1,466 @@
+<% layout("/layouts/boilerplate") %>
+
+<style>
+  .feedback-container {
+    max-width: 900px;
+    margin: 40px auto;
+  }
+
+  .feedback-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .feedback-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  .feedback-header p {
+    font-size: 16px;
+    color: #666;
+  }
+
+  .property-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .property-info h4 {
+    font-weight: 600;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+
+  .property-info p {
+    margin: 8px 0;
+    opacity: 0.95;
+  }
+
+  .rating-category {
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #667eea;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+  }
+
+  .rating-category:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .rating-category label {
+    font-weight: 600;
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .star-rating {
+    display: inline-flex;
+    flex-direction: row;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .star-rating input[type="radio"] {
+    display: none;
+  }
+
+  .star-rating label {
+    cursor: pointer;
+    font-size: 32px;
+    color: #ddd;
+    transition: all 0.2s ease;
+    margin: 0;
+    padding: 0;
+    width: auto;
+    font-weight: normal;
+    user-select: none;
+    line-height: 1;
+  }
+
+  .star-rating label:hover {
+    color: #ffc107;
+    transform: scale(1.15);
+  }
+
+  /* Color the selected star and all lower values */
+  .star-rating input[type="radio"]:checked + label {
+    color: #ffc107;
+  }
+
+  .star-rating input[type="radio"]:checked + label,
+  .star-rating input[type="radio"]:checked + label ~ label {
+    color: #ffc107;
+  }
+
+  /* Hover effect for the selected value and lower values */
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #ffc107;
+  }
+
+  /* Dark mode support */
+  [data-theme="dark"] .feedback-header h2 {
+    color: #f3f4f6;
+  }
+
+  [data-theme="dark"] .feedback-header p {
+    color: #d1d5db;
+  }
+
+  [data-theme="dark"] .rating-category {
+    background-color: #1f2937;
+    color: #f3f4f6;
+  }
+
+  [data-theme="dark"] .rating-category label {
+    color: #f3f4f6;
+  }
+
+  [data-theme="dark"] h3,
+  [data-theme="dark"] h5 {
+    color: #f3f4f6 !important;
+  }
+
+  [data-theme="dark"] small {
+    color: #d1d5db !important;
+  }
+
+  [data-theme="dark"] .form-control,
+  [data-theme="dark"] textarea {
+    background-color: #111827;
+    color: #f3f4f6;
+    border-color: #374151 !important;
+  }
+
+  [data-theme="dark"] .form-control::placeholder,
+  [data-theme="dark"] textarea::placeholder {
+    color: #9ca3af;
+  }
+
+  /* Info box dark mode */
+  [data-theme="dark"] .info-box {
+    background-color: #1e3a5f !important;
+    color: #d1d5db !important;
+    border-left-color: #667eea !important;
+  }
+
+  [data-theme="dark"] ul {
+    color: #d1d5db;
+  }
+
+  [data-theme="dark"] ul li {
+    color: #d1d5db;
+  }
+</style>
+
+<% const isEditing = typeof editingFeedback !== "undefined" && editingFeedback; %>
+<div class="feedback-container">
+  <!-- Header -->
+  <div class="feedback-header">
+    <h2><%= isEditing ? "✏️ Edit your stay feedback" : "💬 How was your actual stay?" %></h2>
+    <p>Help us understand the gap between listings and reality</p>
+  </div>
+
+  <!-- Property Info Card -->
+  <div class="property-info">
+    <h4>📍 <%= listing.title %></h4>
+    <p><strong>Check-in:</strong> <%= new Date(booking.checkIn).toLocaleDateString("en-IN") %></p>
+    <p><strong>Check-out:</strong> <%= new Date(booking.checkOut).toLocaleDateString("en-IN") %></p>
+  </div>
+
+  <!-- Feedback Form -->
+  <form action="<%= isEditing ? `/reality-check-feedback/${editingFeedback._id}?_method=PUT` : `/bookings/${booking._id}/reality-check-feedback` %>" method="POST">
+
+    <!-- Rating Section Header -->
+    <h3 style="font-size: 22px; font-weight: 700; margin-bottom: 25px;">
+      <i class="fas fa-star"></i> <%= isEditing ? "Update Your Experience" : "Rate Your Experience" %>
+    </h3>
+
+    <!-- Cleanliness Rating -->
+    <div class="rating-category">
+      <label>🧹 Cleanliness</label>
+      <div class="star-rating">
+        <input type="radio" id="cleanliness-1" name="ratings[cleanliness]" value="1" />
+        <label for="cleanliness-1" title="Poor">★</label>
+        
+        <input type="radio" id="cleanliness-2" name="ratings[cleanliness]" value="2" />
+        <label for="cleanliness-2" title="Fair">★</label>
+        
+        <input type="radio" id="cleanliness-3" name="ratings[cleanliness]" value="3" />
+        <label for="cleanliness-3" title="Good">★</label>
+        
+        <input type="radio" id="cleanliness-4" name="ratings[cleanliness]" value="4" />
+        <label for="cleanliness-4" title="Very Good">★</label>
+        
+        <input type="radio" id="cleanliness-5" name="ratings[cleanliness]" value="5" />
+        <label for="cleanliness-5" title="Excellent">★</label>
+      </div>
+    </div>
+
+    <!-- Wi-Fi Quality Rating -->
+    <div class="rating-category">
+      <label>📶 Wi-Fi Quality</label>
+      <div class="star-rating">
+        <input type="radio" id="wifi-1" name="ratings[wifiQuality]" value="1" />
+        <label for="wifi-1" title="Poor">★</label>
+        
+        <input type="radio" id="wifi-2" name="ratings[wifiQuality]" value="2" />
+        <label for="wifi-2" title="Fair">★</label>
+        
+        <input type="radio" id="wifi-3" name="ratings[wifiQuality]" value="3" />
+        <label for="wifi-3" title="Good">★</label>
+        
+        <input type="radio" id="wifi-4" name="ratings[wifiQuality]" value="4" />
+        <label for="wifi-4" title="Very Good">★</label>
+        
+        <input type="radio" id="wifi-5" name="ratings[wifiQuality]" value="5" />
+        <label for="wifi-5" title="Excellent">★</label>
+      </div>
+    </div>
+
+    <!-- Parking Availability Rating -->
+    <div class="rating-category">
+      <label>🅿️ Parking Availability</label>
+      <div class="star-rating">
+        <input type="radio" id="parking-1" name="ratings[parkingAvailability]" value="1" />
+        <label for="parking-1" title="Poor">★</label>
+        
+        <input type="radio" id="parking-2" name="ratings[parkingAvailability]" value="2" />
+        <label for="parking-2" title="Fair">★</label>
+        
+        <input type="radio" id="parking-3" name="ratings[parkingAvailability]" value="3" />
+        <label for="parking-3" title="Good">★</label>
+        
+        <input type="radio" id="parking-4" name="ratings[parkingAvailability]" value="4" />
+        <label for="parking-4" title="Very Good">★</label>
+        
+        <input type="radio" id="parking-5" name="ratings[parkingAvailability]" value="5" />
+        <label for="parking-5" title="Excellent">★</label>
+      </div>
+    </div>
+
+    <!-- Road Accessibility Rating -->
+    <div class="rating-category">
+      <label>🛣️ Road/Location Accessibility</label>
+      <div class="star-rating">
+        <input type="radio" id="road-1" name="ratings[roadAccessibility]" value="1" />
+        <label for="road-1" title="Poor">★</label>
+        
+        <input type="radio" id="road-2" name="ratings[roadAccessibility]" value="2" />
+        <label for="road-2" title="Fair">★</label>
+        
+        <input type="radio" id="road-3" name="ratings[roadAccessibility]" value="3" />
+        <label for="road-3" title="Good">★</label>
+        
+        <input type="radio" id="road-4" name="ratings[roadAccessibility]" value="4" />
+        <label for="road-4" title="Very Good">★</label>
+        
+        <input type="radio" id="road-5" name="ratings[roadAccessibility]" value="5" />
+        <label for="road-5" title="Excellent">★</label>
+      </div>
+    </div>
+
+    <!-- Location Accuracy Rating -->
+    <div class="rating-category">
+      <label>📍 Location Accuracy</label>
+      <p style="font-size: 14px; color: #666; margin: 8px 0 12px 0;">Did the location match the listing description?</p>
+      <div class="star-rating">
+        <input type="radio" id="location-1" name="ratings[locationAccuracy]" value="1" />
+        <label for="location-1" title="Very Inaccurate">★</label>
+        
+        <input type="radio" id="location-2" name="ratings[locationAccuracy]" value="2" />
+        <label for="location-2" title="Inaccurate">★</label>
+        
+        <input type="radio" id="location-3" name="ratings[locationAccuracy]" value="3" />
+        <label for="location-3" title="Somewhat Accurate">★</label>
+        
+        <input type="radio" id="location-4" name="ratings[locationAccuracy]" value="4" />
+        <label for="location-4" title="Mostly Accurate">★</label>
+        
+        <input type="radio" id="location-5" name="ratings[locationAccuracy]" value="5" />
+        <label for="location-5" title="Very Accurate">★</label>
+      </div>
+    </div>
+
+    <!-- Amenities Accuracy Rating -->
+    <div class="rating-category">
+      <label>✨ Amenities Accuracy</label>
+      <p style="font-size: 14px; color: #666; margin: 8px 0 12px 0;">Were the amenities as described in the listing?</p>
+      <div class="star-rating">
+        <input type="radio" id="amenities-1" name="ratings[amenitiesAccuracy]" value="1" />
+        <label for="amenities-1" title="Very Different">★</label>
+        
+        <input type="radio" id="amenities-2" name="ratings[amenitiesAccuracy]" value="2" />
+        <label for="amenities-2" title="Somewhat Different">★</label>
+        
+        <input type="radio" id="amenities-3" name="ratings[amenitiesAccuracy]" value="3" />
+        <label for="amenities-3" title="Mostly As Described">★</label>
+        
+        <input type="radio" id="amenities-4" name="ratings[amenitiesAccuracy]" value="4" />
+        <label for="amenities-4" title="Almost Perfect">★</label>
+        
+        <input type="radio" id="amenities-5" name="ratings[amenitiesAccuracy]" value="5" />
+        <label for="amenities-5" title="Exactly As Described">★</label>
+      </div>
+    </div>
+
+    <!-- Host Experience Rating -->
+    <div class="rating-category">
+      <label>👤 Host Experience</label>
+      <div class="star-rating">
+        <input type="radio" id="host-1" name="ratings[hostExperience]" value="1" />
+        <label for="host-1" title="Poor">★</label>
+        
+        <input type="radio" id="host-2" name="ratings[hostExperience]" value="2" />
+        <label for="host-2" title="Fair">★</label>
+        
+        <input type="radio" id="host-3" name="ratings[hostExperience]" value="3" />
+        <label for="host-3" title="Good">★</label>
+        
+        <input type="radio" id="host-4" name="ratings[hostExperience]" value="4" />
+        <label for="host-4" title="Very Good">★</label>
+        
+        <input type="radio" id="host-5" name="ratings[hostExperience]" value="5" />
+        <label for="host-5" title="Excellent">★</label>
+      </div>
+    </div>
+
+    <!-- Listing Accuracy Question -->
+    <h3 style="font-size: 22px; font-weight: 700; margin: 40px 0 25px 0; color: #333;">
+      <i class="fas fa-question-circle"></i> Did the property match its listing description?
+    </h3>
+
+    <div class="rating-category" style="border-left-color: #ff6b6b;">
+      <div style="display: flex; flex-direction: column; gap: 15px;">
+        <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500; margin-bottom: 0;">
+          <input type="radio" name="listingAccuracy" value="better_than_expected" required style="width: 20px; height: 20px; cursor: pointer; margin-right: 12px;" />
+          <span><i class="fas fa-thumbs-up" style="color: #28a745; margin-right: 8px;"></i> Better than expected</span>
+        </label>
+
+        <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500; margin-bottom: 0;">
+          <input type="radio" name="listingAccuracy" value="as_described" required style="width: 20px; height: 20px; cursor: pointer; margin-right: 12px;" />
+          <span><i class="fas fa-check-circle" style="color: #007bff; margin-right: 8px;"></i> As described</span>
+        </label>
+
+        <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500; margin-bottom: 0;">
+          <input type="radio" name="listingAccuracy" value="partially_different" required style="width: 20px; height: 20px; cursor: pointer; margin-right: 12px;" />
+          <span><i class="fas fa-exclamation-triangle" style="color: #ffc107; margin-right: 8px;"></i> Partially different</span>
+        </label>
+
+        <label style="display: flex; align-items: center; cursor: pointer; font-weight: 500; margin-bottom: 0;">
+          <input type="radio" name="listingAccuracy" value="significantly_different" required style="width: 20px; height: 20px; cursor: pointer; margin-right: 12px;" />
+          <span><i class="fas fa-times-circle" style="color: #dc3545; margin-right: 8px;"></i> Significantly different</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Additional Comments Section -->
+    <h3 style="font-size: 22px; font-weight: 700; margin: 40px 0 25px 0;">
+      <i class="fas fa-comment"></i> Additional Comments
+    </h3>
+
+    <div class="rating-category" style="border-left-color: #17a2b8;">
+      <label for="comment" style="font-weight: 600; font-size: 16px; margin-bottom: 12px; display: block;">Share more details (Optional)</label>
+      <textarea
+        name="comment"
+        id="comment"
+        class="form-control"
+        rows="5"
+        placeholder="Tell us more about your experience... What was good? What could be improved?"
+        maxlength="1000"
+        style="border-radius: 8px; font-size: 15px; padding: 12px;"
+      ><%= isEditing ? editingFeedback.comment : "" %></textarea>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display: flex; gap: 12px; margin-top: 40px; margin-bottom: 40px;">
+      <a href="/listings/<%= listing._id %>" class="btn btn-outline-secondary" style="padding: 12px 30px; font-weight: 600;">
+        <i class="fas fa-times"></i> Cancel
+      </a>
+      <button type="submit" class="btn btn-primary" id="submitBtn" style="padding: 12px 30px; font-weight: 600; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none;">
+        <i class="fas fa-paper-plane"></i> <%= isEditing ? "Update Feedback" : "Submit Feedback" %>
+      </button>
+    </div>
+
+  </form>
+
+  <!-- Info Box -->
+  <div class="info-box" style="background: #f0f4ff; border-left: 5px solid #667eea; padding: 20px; border-radius: 8px; margin-bottom: 40px;">
+    <h5 style="color: #333; margin-bottom: 12px; font-weight: 600;">
+      <i class="fas fa-lightbulb"></i> Why Your Feedback Matters
+    </h5>
+      <li>Help identify gaps between listing descriptions and actual properties</li>
+      <li>Enable property owners to improve their services and accuracy</li>
+      <li>Guide future travelers in making informed booking decisions</li>
+      <li>Build a more transparent and trustworthy travel community</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  const existingFeedback = <%- JSON.stringify(isEditing ? editingFeedback : null) %>;
+
+  if (existingFeedback) {
+    Object.entries(existingFeedback.ratings).forEach(([field, value]) => {
+      const selectedRating = document.querySelector(`input[name="ratings[${field}]"][value="${value}"]`);
+      if (selectedRating) selectedRating.checked = true;
+    });
+
+    const selectedAccuracy = document.querySelector(`input[name="listingAccuracy"][value="${existingFeedback.listingAccuracy}"]`);
+    if (selectedAccuracy) selectedAccuracy.checked = true;
+  }
+
+  // Validate form before submission
+  document.querySelector('form').addEventListener('submit', function(e) {
+    const requiredRatings = [
+      'ratings[cleanliness]',
+      'ratings[wifiQuality]',
+      'ratings[parkingAvailability]',
+      'ratings[roadAccessibility]',
+      'ratings[locationAccuracy]',
+      'ratings[amenitiesAccuracy]',
+      'ratings[hostExperience]'
+    ];
+
+    let allRatingsSelected = true;
+    let missingRatings = [];
+
+    requiredRatings.forEach(ratingName => {
+      const selected = document.querySelector(`input[name="${ratingName}"]:checked`);
+      if (!selected) {
+        allRatingsSelected = false;
+        missingRatings.push(ratingName.replace('ratings[', '').replace(']', ''));
+      }
+    });
+
+    const accuracySelected = document.querySelector('input[name="listingAccuracy"]:checked');
+    if (!accuracySelected) {
+      allRatingsSelected = false;
+    }
+
+    if (!allRatingsSelected) {
+      e.preventDefault();
+      alert('❌ Please rate all categories before submitting!');
+      return false;
+    }
+
+    // Debug: Log all form data being sent
+    const formData = new FormData(this);
+    console.log('Form data being sent:');
+    for (let [key, value] of formData.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+  });
+</script>
