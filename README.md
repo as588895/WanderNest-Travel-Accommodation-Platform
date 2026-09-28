@@ -60,43 +60,77 @@ WanderNest brings these core activities together into a single platform with:
 
 ## 🔐 Authentication & User Management
 
-- User registration
-- Secure login/logout
+- User registration and login
+- Secure logout and session management
 - Passport.js authentication
-- Session management
 - Password hashing
-- Password change functionality
+- Forgot / Change Password functionality
 - Password confirmation validation
 - Protected routes
-- Authorization middleware
+- User authorization
 
 ---
 
 ## 🏡 Property Listing Management
 
-Authenticated users can:
+Authenticated hosts can:
 
-- Create listings
-- View listings
-- Edit listings
-- Delete listings
-- Manage listing information
+- Create new accommodation listings
+- Edit existing listings
+- Delete their listings
+- View property details
 - Upload property images
-- Associate listings with their owners
+- Manage listing information
+- Associate listings with their account
 
 ---
 
-## 🔎 Search & Discovery
+## 🔎 Search & Accommodation Discovery
 
 Users can:
 
-- Browse available accommodations
 - Search destinations
-- Explore listing details
-- View property information
-- Discover properties through categories and locations
+- Browse available accommodations
+- Explore property categories
+- View detailed property information
+- Check property location
+- Discover stays based on their requirements
 
 ---
+
+## ❤️ Wishlist
+
+Users can save their favorite properties to a personal wishlist.
+
+### Wishlist functionality includes:
+
+- Add listing to wishlist
+- Remove listing from wishlist
+- View saved properties
+- User-specific wishlist management
+
+---
+
+## 🧠 WanderNest AI — Travel Assistant
+
+WanderNest includes an integrated AI-powered travel assistant.
+
+Users can interact with **WanderNest AI** to discover suitable stays based on:
+
+- 📍 Destination
+- 💰 Budget
+- 🏡 Property category
+- 🗓️ Trip requirements
+
+The assistant analyzes the user's request and suggests relevant WanderNest properties with direct links to their listing pages.
+
+**Example:**
+
+**User:**  
+Plan a 3 day trip
+
+**WanderNest AI:**  
+Suggests suitable stays with location, price and direct property links.
 
 ## ⭐ Reviews & Ratings
 
