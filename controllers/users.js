@@ -296,20 +296,39 @@ module.exports.forgotPasswordWithOldPassword = async (req, res) => {
         } = req.body;
 
 
-        // Check new password length
+        // ================================================
+        // BASIC VALIDATION
+        // ================================================
 
-        if (!newPassword || newPassword.length < 6) {
+        if (!identifier || !oldPassword || !newPassword || !confirmPassword) {
 
             req.flash(
                 "error",
-                "New password must be at least 6 characters."
+                "Please fill all the fields."
             );
 
             return res.redirect("/forgot-password");
         }
 
 
-        // Check new passwords match
+        // ================================================
+        // NEW PASSWORD LENGTH
+        // ================================================
+
+        if (newPassword.length < 6) {
+
+            req.flash(
+                "error",
+                "Weak Password. Password must be at least 6 characters."
+            );
+
+            return res.redirect("/forgot-password");
+        }
+
+
+        // ================================================
+        // PASSWORD MATCH
+        // ================================================
 
         if (newPassword !== confirmPassword) {
 
@@ -322,12 +341,19 @@ module.exports.forgotPasswordWithOldPassword = async (req, res) => {
         }
 
 
-        // Find user using username OR email
+        // ================================================
+        // FIND USER
+        // Username OR Email
+        // ================================================
 
         const user = await User.findOne({
             $or: [
-                { username: identifier },
-                { email: identifier }
+                {
+                    username: identifier
+                },
+                {
+                    email: identifier
+                }
             ]
         });
 
@@ -343,32 +369,23 @@ module.exports.forgotPasswordWithOldPassword = async (req, res) => {
         }
 
 
-        // =================================================
-        // VERIFY OLD PASSWORD
-        // =================================================
+        // ================================================
+        // CHANGE PASSWORD
+        // ================================================
 
-        const isOldPasswordCorrect =
-            await new Promise((resolve, reject) => {
+        try {
 
-                user.authenticate(
-                    oldPassword,
-                    (err, authenticatedUser) => {
+            await user.changePassword(
+                oldPassword,
+                newPassword
+            );
 
-                        if (err) {
-                            return reject(err);
-                        }
+        } catch (passwordError) {
 
-                        resolve(
-                            !!authenticatedUser
-                        );
-
-                    }
-                );
-
-            });
-
-
-        if (!isOldPasswordCorrect) {
+            console.error(
+                "Password verification error:",
+                passwordError
+            );
 
             req.flash(
                 "error",
@@ -379,14 +396,9 @@ module.exports.forgotPasswordWithOldPassword = async (req, res) => {
         }
 
 
-        // =================================================
-        // UPDATE PASSWORD
-        // =================================================
-
-        await user.setPassword(newPassword);
-
-        await user.save();
-
+        // ================================================
+        // SUCCESS
+        // ================================================
 
         req.flash(
             "success",
@@ -394,13 +406,13 @@ module.exports.forgotPasswordWithOldPassword = async (req, res) => {
         );
 
 
-        res.redirect("/login");
+        return res.redirect("/login");
 
 
     } catch (error) {
 
         console.error(
-            "Password update error:",
+            "CHANGE PASSWORD ERROR:",
             error
         );
 
@@ -411,8 +423,7 @@ module.exports.forgotPasswordWithOldPassword = async (req, res) => {
         );
 
 
-        res.redirect("/forgot-password");
-
+        return res.redirect("/forgot-password");
     }
 
 };
