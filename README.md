@@ -2,169 +2,225 @@
 
 # 🌍 WanderNest
 
-### Full-Stack Travel & Accommodation Booking Platform
+### ✈️ Travel & Accommodation Booking Platform
 
-**Discover stays. Explore destinations. Book experiences.**
+**Discover stays • Explore destinations • Book experiences**
 
-<br/>
+<br />
 
 <a href="https://wandernest-7dn2.onrender.com/">
-  <img src="https://img.shields.io/badge/🚀%20LIVE%20DEMO-WanderNest-ff385c?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/🚀%20LIVE%20DEMO-Visit%20WanderNest-ff385c?style=for-the-badge" />
 </a>
-
+&nbsp;
 <a href="https://github.com/as588895/WanderNest-Travel-Accommodation-Platform">
-  <img src="https://img.shields.io/badge/💻%20SOURCE%20CODE-GitHub-181717?style=for-the-badge&logo=github" />
+  <img src="https://img.shields.io/badge/💻%20GITHUB-Source%20Code-181717?style=for-the-badge&logo=github" />
 </a>
-
+&nbsp;
 <a href="https://www.aman-singh.dev/">
   <img src="https://img.shields.io/badge/👨‍💻%20PORTFOLIO-Aman%20Singh-0f172a?style=for-the-badge" />
 </a>
 
-<br/><br/>
+<br /><br />
 
-<img src="https://img.shields.io/badge/React-20232A?style=flat-square&logo=react&logoColor=61DAFB"/>
-<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white"/>
-<img src="https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white"/>
-<img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white"/>
-<img src="https://img.shields.io/badge/Cloudinary-3448C5?style=flat-square&logo=cloudinary&logoColor=white"/>
-<img src="https://img.shields.io/badge/Mapbox-000000?style=flat-square&logo=mapbox&logoColor=white"/>
-<img src="https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=000000"/>
+<img src="https://img.shields.io/badge/React.js-61DAFB?style=flat-square&logo=react&logoColor=black" />
+<img src="https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white" />
+<img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=node.js&logoColor=white" />
+<img src="https://img.shields.io/badge/Express.js-000000?style=flat-square&logo=express&logoColor=white" />
+<img src="https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white" />
+<img src="https://img.shields.io/badge/Cloudinary-3448C5?style=flat-square&logo=cloudinary&logoColor=white" />
+<img src="https://img.shields.io/badge/Mapbox-000000?style=flat-square&logo=mapbox&logoColor=white" />
+<img src="https://img.shields.io/badge/Razorpay-3395FF?style=flat-square&logo=razorpay&logoColor=white" />
+<img src="https://img.shields.io/badge/Render-46E3B7?style=flat-square&logo=render&logoColor=black" />
 
 </div>
 
 ---
 
-## ✨ Overview
+## 🏡 What is WanderNest?
 
-**WanderNest** is a full-stack travel and accommodation booking platform designed to provide a complete property discovery and booking experience.
+**WanderNest** is a full-stack travel and accommodation platform that provides an end-to-end experience for discovering and booking stays.
 
-Users can **explore destinations, browse accommodations, view property details, create listings, upload images, write reviews, make bookings, and securely manage their accounts** through a REST API powered application.
+Users can browse accommodations, search destinations, view detailed property information, manage wishlists, create and manage listings, upload property images, write reviews, make bookings, complete payments, and manage their accounts through a secure authentication system.
 
-> 🚀 Built as a real-world full-stack project with authentication, database modeling, cloud storage, maps, payments, API integration, and production deployment.
+The project combines a **React + Vite frontend** with a **Node.js + Express REST API**, **MongoDB Atlas**, session-based authentication, cloud image storage, maps, payment processing, and an AI-powered travel assistant.
+
+> 🎯 **Goal:** Build a production-oriented full-stack application that demonstrates real-world frontend, backend, database, authentication, API integration, and deployment concepts.
 
 ---
 
-## 🌟 Key Features
+# ✨ Features
 
 <table>
 <tr>
-<td width="33%">
 
-### 🏠 Listings
+<td width="33%" valign="top">
 
-- Create & manage properties
-- Property details
-- Categories & destinations
-- Image uploads
-- Cloudinary integration
+### 🏠 Accommodation
+
+- Browse available stays
+- Search & explore listings
+- View detailed property pages
+- Create new listings
+- Edit existing listings
+- Delete owned listings
+- Property categories
+- Destination & location data
+- Cloud image uploads
 
 </td>
 
-<td width="33%">
+<td width="33%" valign="top">
 
 ### 🔐 Authentication
 
 - User registration
-- Secure login
-- Passport.js
-- Session management
+- Secure login/logout
+- Passport.js authentication
+- Session-based authentication
 - Protected routes
+- Change password
+- Forgot password flow
+- Password reset tokens
+- Persistent user sessions
 
 </td>
 
-<td width="33%">
+<td width="33%" valign="top">
 
-### 📅 Booking
+### 📅 Booking System
 
-- Accommodation booking
-- Date-based reservations
+- Date-based bookings
+- Guest selection
 - Booking validation
-- Booking management
-- Payment integration
+- Price calculation
+- Tax calculation
+- Long-stay discount
+- Razorpay order creation
+- Payment confirmation
+- Booking cancellation
+- Booking history
 
 </td>
+
 </tr>
 
 <tr>
-<td>
 
-### ⭐ Reviews
+<td valign="top">
 
-- User reviews
-- Ratings
-- Review management
-- Protected review routes
+### ⭐ Reviews & Ratings
+
+- Add reviews
+- Rating system
+- Delete own reviews
+- Protected review actions
+- Listing-specific reviews
 
 </td>
 
-<td>
+<td valign="top">
 
-### 🗺️ Maps
+### ❤️ Wishlist
+
+- Add listings to wishlist
+- Remove listings
+- View saved accommodations
+- User-specific wishlist data
+
+</td>
+
+<td valign="top">
+
+### 🗺️ Location & Maps
 
 - Mapbox integration
-- Property locations
-- Interactive location data
-- Destination visualization
+- Location geocoding
+- Property coordinates
+- Location visualization
+- Destination-based discovery
 
 </td>
 
-<td>
+</tr>
 
-### 🤖 AI Assistant
+<tr>
 
-- Travel assistance
-- Interactive experience
-- AI-powered functionality
+<td valign="top">
+
+### 🤖 AI Travel Assistant
+
+- Interactive AI assistant
+- Destination understanding
+- Budget extraction
+- Listing matching
+- Travel-oriented responses
+- Relevant accommodation suggestions
 
 </td>
+
+<td valign="top">
+
+### 🧠 Reality Check
+
+- Booking-related feedback
+- Listing feedback flow
+- User feedback management
+- Feedback connected with listings & bookings
+
+</td>
+
+<td valign="top">
+
+### 💳 Payments
+
+- Razorpay integration
+- Secure order creation
+- Payment confirmation
+- Booking price summary
+- Tax & discount calculation
+
+</td>
+
 </tr>
 </table>
 
-### ⚡ Additional Features
-
-- 🔎 Accommodation & destination discovery
-- 📱 Responsive user interface
-- ❤️ Wishlist / favorites
-- 💳 Razorpay payment integration
-- ☁️ Cloudinary image management
-- 🗺️ Mapbox location integration
-- 🛡️ Protected API routes
-- ⚡ RESTful API architecture
-- 📊 MongoDB Atlas database
-- 🚀 Render deployment
-
 ---
 
-## 🧠 Engineering Highlights
-
-WanderNest follows a **modular full-stack architecture** where the frontend communicates with the backend through RESTful APIs.
+# 🧩 How WanderNest Works
 
 ```text
                          👤 USER
                            │
                            ▼
-                ┌────────────────────┐
-                │   React + Vite     │
-                │    Frontend UI     │
-                └─────────┬──────────┘
-                          │
-                          │ Axios / REST API
-                          ▼
-                ┌────────────────────┐
-                │   Express.js       │
-                │    Backend API     │
-                └─────────┬──────────┘
-                          │
-             ┌────────────┼────────────┐
-             │            │            │
-             ▼            ▼            ▼
-        🔐 Passport   🏠 Listings   📅 Booking
-        Authentication Business     Management
-             │         Logic            │
-             └────────────┬────────────┘
-                          │
-                          ▼
-                ┌────────────────────┐
-                │   MongoDB Atlas    │
-                │     Mongoose       │
-                └────────────────────┘
+              ┌────────────────────────┐
+              │     React + Vite        │
+              │      Frontend           │
+              └────────────┬───────────┘
+                           │
+                           │ Axios
+                           │ REST API
+                           ▼
+              ┌────────────────────────┐
+              │      Express.js        │
+              │       API Layer        │
+              └────────────┬───────────┘
+                           │
+          ┌────────────────┼─────────────────┐
+          │                │                 │
+          ▼                ▼                 ▼
+    🔐 Authentication   🏠 Listings      📅 Booking
+    Passport + Session   CRUD Logic       Payments
+          │                │                 │
+          └────────────────┼─────────────────┘
+                           │
+                           ▼
+              ┌────────────────────────┐
+              │      MongoDB Atlas      │
+              │       Mongoose          │
+              └────────────────────────┘
+                           │
+          ┌────────────────┼─────────────────┐
+          │                │                 │
+          ▼                ▼                 ▼
+      ☁️ Cloudinary      🗺️ Mapbox       💳 Razorpay
+      Image Storage      Geocoding         Payments
