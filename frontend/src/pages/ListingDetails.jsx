@@ -22,6 +22,7 @@ export default function ListingDetails({ user, notify }) {
   const [data, setData] = useState(null);
   const [realityFeedback, setRealityFeedback] = useState([]);
   const [feedbackLoading, setFeedbackLoading] = useState(true);
+  const [mapRefresh, setMapRefresh] = useState(0);
   const [form, setForm] = useState({ checkIn: "", checkOut: "", guests: 1 });
   const [review, setReview] = useState({ rating: 5, comment: "" });
   const [busy, setBusy] = useState(false);
@@ -175,19 +176,86 @@ export default function ListingDetails({ user, notify }) {
           </div>
         </div>
         <div className="detail-gallery">
-          <img src={listing.image?.url} />
+          <img src={listing.image?.url} alt={listing.title} />
+
           <div className="gallery-side">
-            <div className="mini-card">
-              <ShieldCheck />
-              <b>Secure booking</b>
-              <span>Payment verification powered by Razorpay</span>
+            {/* Razorpay / Secure Booking Card */}
+            <div className="trust-card payment-card">
+              <div className="trust-icon">
+                <ShieldCheck size={26} />
+              </div>
+
+              <div className="trust-content">
+                <span className="trust-label">SECURE BOOKING</span>
+
+                <h3>Razorpay Payments</h3>
+
+                <p>
+                  Secure online payments with server-side payment verification.
+                </p>
+
+                <div className="trust-points">
+                  <span>✓ Razorpay Checkout</span>
+                  <span>✓ Payment Signature Verified</span>
+                  <span>✓ Secure Booking Confirmation</span>
+                </div>
+              </div>
+
+              <div className="razorpay-badge">
+                <span>Powered by</span>
+                <strong>Razorpay</strong>
+              </div>
             </div>
-            <div className="mini-card">
-              <Navigation />
-              <b>Mapped location</b>
-              <span>
-                {listing.location}, {listing.country}
-              </span>
+
+            {/* Location Mini Map */}
+            <div className="trust-card location-card">
+              {coords?.length === 2 ? (
+                <div className="mini-map-wrapper">
+                  <iframe
+                    title="Property location"
+                    loading="lazy"
+                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${
+                      coords[0] - 0.03
+                    }%2C${coords[1] - 0.03}%2C${coords[0] + 0.03}%2C${
+                      coords[1] + 0.03
+                    }&layer=mapnik&marker=${coords[1]}%2C${coords[0]}`}
+                  />
+
+                  <div className="map-overlay">
+                    <div className="map-pin">
+                      <Navigation size={16} />
+                    </div>
+
+                    <div>
+                      <span>PROPERTY LOCATION</span>
+                      <strong>
+                        {listing.location}, {listing.country}
+                      </strong>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="no-map">
+                  <Navigation size={25} />
+
+                  <strong>Location</strong>
+
+                  <span>
+                    {listing.location}, {listing.country}
+                  </span>
+                </div>
+              )}
+
+              {coords?.length === 2 && (
+                <a
+                  className="map-open-btn"
+                  href={`https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=14/${coords[1]}/${coords[0]}`}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Open full map ↗
+                </a>
+              )}
             </div>
           </div>
         </div>
@@ -209,11 +277,29 @@ export default function ListingDetails({ user, notify }) {
                   Open map ↗
                 </a>
               </div>
-              <iframe
-                title="Property location map"
-                loading="lazy"
-                src={`https://www.openstreetmap.org/export/embed.html?bbox=${coords[0] - 0.04}%2C${coords[1] - 0.04}%2C${coords[0] + 0.04}%2C${coords[1] + 0.04}&layer=mapnik&marker=${coords[1]}%2C${coords[0]}`}
-              />
+              <div className="map-wrapper">
+                <iframe
+                  key={mapRefresh}
+                  title="Property location map"
+                  loading="lazy"
+                  src={`https://www.openstreetmap.org/export/embed.html?bbox=${
+                    coords[0] - 0.04
+                  }%2C${coords[1] - 0.04}%2C${coords[0] + 0.04}%2C${
+                    coords[1] + 0.04
+                  }&layer=mapnik&marker=${coords[1]}%2C${coords[0]}`}
+                />
+
+                {/* Recenter Listing Location */}
+                <button
+                  type="button"
+                  className="map-location-btn"
+                  title="Return to property location"
+                  aria-label="Return to property location"
+                  onClick={() => setMapRefresh((value) => value + 1)}
+                >
+                  <Navigation size={19} />
+                </button>
+              </div>
             </>
           ) : (
             <p className="muted">
