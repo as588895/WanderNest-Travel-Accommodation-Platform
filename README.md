@@ -1,141 +1,76 @@
-# WanderNest — React + Node/Express + MongoDB
+<div align="center">
 
-A complete React migration of the original WanderNest Travel & Accommodation Booking Platform. The backend keeps the original business logic and integrations, while the new frontend provides a modern responsive UI.
+# 🌍 WanderNest
 
-## Architecture
+### A Full-Stack Travel & Accommodation Booking Platform
 
-```text
-WanderNest-React-FullStack/
-├── backend/
-│   ├── app.js
-│   ├── api.js
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── views/                 # Original EJS fallback/reference
-│   ├── public/                # Original browser assets
-│   ├── cloudConfig.js
-│   ├── middleware.js
-│   └── .env.example
-└── frontend/
-    ├── src/
-    │   ├── components/
-    │   ├── pages/
-    │   └── services/api.js
-    ├── index.html
-    ├── vite.config.js
-    └── .env.example
-```
+**Discover stays. Explore destinations. Book experiences.**
 
-## Original functionality preserved
+<p>
+  <a href="https://wandernest-7dn2.onrender.com/">
+    <img src="https://img.shields.io/badge/🚀%20Live%20Demo-WanderNest-ff385c?style=for-the-badge" />
+  </a>
+  <a href="https://github.com/as588895/WanderNest-Travel-Accommodation-Platform">
+    <img src="https://img.shields.io/badge/💻%20Source%20Code-GitHub-181717?style=for-the-badge&logo=github" />
+  </a>
+  <a href="https://www.aman-singh.dev/">
+    <img src="https://img.shields.io/badge/👨‍💻%20Portfolio-Aman%20Singh-0f172a?style=for-the-badge" />
+  </a>
+</p>
 
-- Passport.js signup, login, logout and persistent session authentication
-- Session-backed MongoDB store
-- Username dropdown, wishlist, My Orders and logout
-- Forgot password token flow + old-password/new-password change flow
-- Password reset token hashing and expiry
-- Listing search across title/location/country/category
-- Category filters
-- Create, edit and delete listings with owner authorization
-- Cloudinary image upload
-- Mapbox geocoding and stored GeoJSON coordinates
-- Property detail pages and map preview
-- Wishlist add/remove
-- Guest reviews with author-only deletion
-- Booking date/guest validation
-- 18% tax and 10% long-stay discount for 5+ nights
-- Razorpay order creation
-- Razorpay payment signature verification
-- Booking history / My Orders
-- Booking cancellation and Razorpay refund initiation
-- Booking deletion
-- Completed-stay Reality Check feedback with 7 structured ratings
-- Reality Check feedback editing
-- AI-assisted property discovery through the existing AI backend
-- Legacy EJS routes/views remain in the backend as a fallback/reference
+</div>
 
-## Important booking fix
+---
 
-The React version now returns JSON after Razorpay signature verification instead of redirecting an Axios request to an EJS page. The frontend then opens the confirmed booking page directly.
+## ✨ Overview
 
-It also checks confirmed bookings for overlapping dates before creating a Razorpay order, reducing accidental double-booking of the same property.
+**WanderNest** is a full-stack travel & accommodation platform inspired by modern vacation-rental experiences.
 
-## Extra UI/features added
+It enables users to **discover destinations, explore accommodations, view property details, upload listings, write reviews, make bookings, and manage authentication securely** — backed by RESTful APIs and a MongoDB-powered backend.
 
-- Premium responsive travel UI
-- Animated hero section with Framer Motion
-- Category discovery pills
-- Better property cards with ratings/category badges
-- Owner dashboard actions for edit/delete
-- Add/edit listing UI with image preview
-- Secure booking summary with live nights/tax/discount/total calculation
-- Booking confirmation page
-- Mapped property location preview
-- Profile/security page
-- Reality Check rating UI
-- Mobile-responsive navigation and user dropdown
-- Toast feedback for common actions
+> 🚀 Built with a focus on real-world full-stack architecture, authentication, third-party API integration, and production deployment.
 
-## Local setup
+---
 
-### 1. Backend
+## 🌟 Key Features
 
-```powershell
-cd backend
-npm install
-copy .env.example .env
-npm run dev
-```
+| 🏠 Listings | 🔐 Authentication | 📅 Booking |
+|---|---|---|
+| Create & manage properties | Passport.js authentication | Date-based reservations |
+| Image uploads with Cloudinary | Session-based login | Booking validation |
+| Categories & destinations | Protected routes | Booking management |
 
-Backend runs on `http://localhost:8080`.
+| ⭐ Reviews | 🗺️ Maps | 🤖 AI Assistant |
+|---|---|---|
+| Ratings & reviews | Mapbox integration | Travel assistance |
+| User-based reviews | Location visualization | Interactive UI |
 
-Fill `backend/.env` with the same MongoDB, session, Mapbox, Cloudinary, Razorpay and optional OpenAI values used by the original project.
+### More
 
-### 2. Frontend
+- 🔎 Destination & accommodation discovery
+- 📱 Responsive interface
+- ❤️ Wishlist / favorites functionality
+- 💳 Razorpay payment integration
+- ☁️ Cloudinary image management
+- 🗺️ Mapbox location integration
+- 🛡️ Protected API routes
+- ⚡ RESTful API architecture
+- 📊 MongoDB Atlas database
+- 🚀 Render deployment
 
-Open a second terminal:
+---
 
-```powershell
-cd frontend
-npm install
-npm run dev
-```
-
-Open `http://localhost:5173`.
-
-Vite proxies `/api` to the backend, so browser requests and Passport session cookies stay same-origin during local development.
-
-## Demo account
-
-The original backend creates this demo user if it does not already exist:
-
-- Username: `delta-student`
-- Password: `helloworld`
-
-Remove that behavior before production if a demo account is not desired.
-
-## Environment variable names
-
-Backend uses:
+## 🧠 Engineering Highlights
 
 ```text
-ATLASDB_URL
-SECRET
-MAP_TOKEN
-CLOUD_NAME
-CLOUD_API_KEY
-CLOUD_API_SECRET
-RAZORPAY_KEY_ID
-RAZORPAY_KEY_SECRET
-OPENAI_API_KEY        # optional
-OPENAI_MODEL          # optional
-NODE_ENV
-```
-
-Frontend:
-
-```text
-VITE_API_URL=/api
-```
-
-Never commit `.env` files or real API keys.
+Frontend
+   ↓
+React + Vite
+   ↓
+Axios / REST APIs
+   ↓
+Express.js Backend
+   ↓
+Authentication & Business Logic
+   ↓
+MongoDB Atlas
