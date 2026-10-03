@@ -43,9 +43,20 @@ export const booking = {
   confirm: (id, d) => api.post(`/listings/${id}/book/confirm`, d),
 };
 export const feedback = {
+  // Get feedback for a booking
   get: (id) => api.get(`/bookings/${id}/reality-check-feedback`),
-  add: (id, d) => api.post(`/bookings/${id}/reality-check-feedback`, d),
-  update: (id, d) => api.put(`/reality-check-feedback/${id}`, d),
+
+  // Submit feedback for a completed booking
+  add: (id, d) =>
+    api.post(`/bookings/${id}/reality-check-feedback`, d),
+
+  // Update existing feedback
+  update: (id, d) =>
+    api.put(`/reality-check-feedback/${id}`, d),
+
+  // Get all Reality Check feedback for a listing
+  listing: (id) =>
+    api.get(`/listings/${id}/reality-check-feedback`),
 };
 export const ai = { chat: (message) => api.post("/ai/chat", { message }) };
 export default api;

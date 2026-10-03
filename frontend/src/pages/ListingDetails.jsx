@@ -11,7 +11,7 @@ import {
   Users,
   Navigation,
 } from "lucide-react";
-import { listings, reviews, booking } from "../services/api";
+import { listings, reviews, booking, feedback } from "../services/api";
 function nights(a, b) {
   if (!a || !b) return 0;
   return Math.max(0, Math.round((new Date(b) - new Date(a)) / 86400000));
@@ -20,14 +20,33 @@ export default function ListingDetails({ user, notify }) {
   const { id } = useParams();
   const nav = useNavigate();
   const [data, setData] = useState(null);
+  const [realityFeedback, setRealityFeedback] = useState([]);
+  const [feedbackLoading, setFeedbackLoading] = useState(true);
   const [form, setForm] = useState({ checkIn: "", checkOut: "", guests: 1 });
   const [review, setReview] = useState({ rating: 5, comment: "" });
   const [busy, setBusy] = useState(false);
-  const load = () =>
-    listings
-      .one(id)
-      .then((r) => setData(r.data))
-      .catch(() => setData({ error: true }));
+  const load = async () => {
+    try {
+      const [listingResponse, feedbackResponse] = await Promise.all([
+        listings.one(id),
+        feedback.listing(id),
+      ]);
+
+      setData(listingResponse.data);
+
+      setRealityFeedback(feedbackResponse.data.feedback || []);
+    } catch (error) {
+      console.error("Failed to load listing:", error);
+
+      // Listing load fail hone par page error state
+      setData({ error: true });
+
+      // Feedback fail ho to empty rakho
+      setRealityFeedback([]);
+    } finally {
+      setFeedbackLoading(false);
+    }
+  };
   useEffect(() => {
     load();
   }, [id]);
@@ -101,26 +120,23 @@ export default function ListingDetails({ user, notify }) {
         description: `Booking for ${listing.title}`,
         order_id: r.data.orderId,
         prefill: { name: user.username, email: user.email },
-       handler: async response => {
-    try {
-        await booking.confirm(id, {
-            ...form,
-            ...response
-        });
+        handler: async (response) => {
+          try {
+            await booking.confirm(id, {
+              ...form,
+              ...response,
+            });
 
-        notify?.("Payment successful! Your booking is confirmed.");
+            notify?.("Payment successful! Your booking is confirmed.");
 
-        // Directly open My Orders
-        nav("/orders");
-    } catch (e) {
-        notify?.(
-            e.response?.data?.error ||
-            "Payment verification failed."
-        );
-    } finally {
-        setBusy(false);
-    }
-},
+            // Directly open My Orders
+            nav("/orders");
+          } catch (e) {
+            notify?.(e.response?.data?.error || "Payment verification failed.");
+          } finally {
+            setBusy(false);
+          }
+        },
         modal: { ondismiss: () => setBusy(false) },
         theme: { color: "#ff385c" },
       };
@@ -282,6 +298,190 @@ export default function ListingDetails({ user, notify }) {
                 </div>
                 <button className="btn btn-primary">Post review</button>
               </form>
+            </div>
+            {/* Reality Check / Guest Stay Experience Feedback */}
+            <div className="reality-check-section">
+              <div className="section-head">
+                <div>
+                  <h3>✓ Guest Stay Experience Feedback</h3>
+                  <p className="muted">
+                    Real feedback from guests who have stayed here, helping you
+                    understand how this property compares to its listing
+                    description.
+                  </p>
+                </div>
+              </div>
+
+              {feedbackLoading ? (
+                <div className="panel">
+                  <p className="muted">Loading stay feedback...</p>
+                </div>
+              ) : realityFeedback.length > 0 ? (
+                <div className="reality-feedback-list">
+                  {realityFeedback.map((item) => (
+                    <div className="reality-feedback-card" key={item._id}>
+                      <div className="reality-feedback-top">
+                        <div>
+                          <b>{item.user?.username || "Guest"}</b>
+
+                          {item.booking?.checkIn && item.booking?.checkOut && (
+                            <span className="feedback-stay-date">
+                              Stayed:{" "}
+                              {new Date(
+                                item.booking.checkIn,
+                              ).toLocaleDateString()}{" "}
+                              to{" "}
+                              {new Date(
+                                item.booking.checkOut,
+                              ).toLocaleDateString()}
+                            </span>
+                          )}
+                        </div>
+
+                        <span className="feedback-date">
+                          {item.createdAt
+                            ? new Date(item.createdAt).toLocaleDateString()
+                            : ""}
+                        </span>
+                      </div>
+
+                      <div className="feedback-ratings">
+                        <div className="feedback-rating">
+                          <span>🧹 Cleanliness</span>
+                          <strong>
+                            {"★".repeat(Number(item.ratings?.cleanliness || 0))}
+                            {"☆".repeat(
+                              5 - Number(item.ratings?.cleanliness || 0),
+                            )}
+                            <small> {item.ratings?.cleanliness || 0}/5</small>
+                          </strong>
+                        </div>
+
+                        <div className="feedback-rating">
+                          <span>📶 Wi-Fi Quality</span>
+                          <strong>
+                            {"★".repeat(Number(item.ratings?.wifiQuality || 0))}
+                            {"☆".repeat(
+                              5 - Number(item.ratings?.wifiQuality || 0),
+                            )}
+                            <small> {item.ratings?.wifiQuality || 0}/5</small>
+                          </strong>
+                        </div>
+
+                        <div className="feedback-rating">
+                          <span>🅿️ Parking</span>
+                          <strong>
+                            {"★".repeat(
+                              Number(item.ratings?.parkingAvailability || 0),
+                            )}
+                            {"☆".repeat(
+                              5 -
+                                Number(item.ratings?.parkingAvailability || 0),
+                            )}
+                            <small>
+                              {" "}
+                              {item.ratings?.parkingAvailability || 0}/5
+                            </small>
+                          </strong>
+                        </div>
+
+                        <div className="feedback-rating">
+                          <span>🛣️ Road Access</span>
+                          <strong>
+                            {"★".repeat(
+                              Number(item.ratings?.roadAccessibility || 0),
+                            )}
+                            {"☆".repeat(
+                              5 - Number(item.ratings?.roadAccessibility || 0),
+                            )}
+                            <small>
+                              {" "}
+                              {item.ratings?.roadAccessibility || 0}/5
+                            </small>
+                          </strong>
+                        </div>
+
+                        <div className="feedback-rating">
+                          <span>📍 Location Accuracy</span>
+                          <strong>
+                            {"★".repeat(
+                              Number(item.ratings?.locationAccuracy || 0),
+                            )}
+                            {"☆".repeat(
+                              5 - Number(item.ratings?.locationAccuracy || 0),
+                            )}
+                            <small>
+                              {" "}
+                              {item.ratings?.locationAccuracy || 0}/5
+                            </small>
+                          </strong>
+                        </div>
+
+                        <div className="feedback-rating">
+                          <span>✨ Amenities Accuracy</span>
+                          <strong>
+                            {"★".repeat(
+                              Number(item.ratings?.amenitiesAccuracy || 0),
+                            )}
+                            {"☆".repeat(
+                              5 - Number(item.ratings?.amenitiesAccuracy || 0),
+                            )}
+                            <small>
+                              {" "}
+                              {item.ratings?.amenitiesAccuracy || 0}/5
+                            </small>
+                          </strong>
+                        </div>
+
+                        <div className="feedback-rating">
+                          <span>👤 Host Experience</span>
+                          <strong>
+                            {"★".repeat(
+                              Number(item.ratings?.hostExperience || 0),
+                            )}
+                            {"☆".repeat(
+                              5 - Number(item.ratings?.hostExperience || 0),
+                            )}
+                            <small>
+                              {" "}
+                              {item.ratings?.hostExperience || 0}/5
+                            </small>
+                          </strong>
+                        </div>
+                      </div>
+
+                      <div className="listing-accuracy">
+                        <b>Did the property match the listing?</b>
+
+                        <span>
+                          {item.listingAccuracy === "better_than_expected" &&
+                            "👍 Better than expected"}
+
+                          {item.listingAccuracy === "as_described" &&
+                            "✓ As described"}
+
+                          {item.listingAccuracy === "partially_different" &&
+                            "⚠️ Partially different"}
+
+                          {item.listingAccuracy === "significantly_different" &&
+                            "❌ Significantly different"}
+                        </span>
+                      </div>
+
+                      {item.comment && (
+                        <div className="feedback-comment">
+                          <b>Guest comment</b>
+                          <p>{item.comment}</p>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="panel">
+                  <p className="muted">No stay experience feedback yet.</p>
+                </div>
+              )}
             </div>
           </main>
           <aside className="booking-box">
