@@ -29,6 +29,8 @@ const listingController = require("./controllers/listing.js");
 // const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 const dbUrl = process.env.ATLASDB_URL;
 
+const apiRouter = require("./api.js");
+
 main()
 .then ( async() => {
     console.log("connected to DB");
@@ -103,6 +105,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 passport.use(User.createStrategy());
 
+
 passport.serializeUser(User.serializeUser());  //user related session store called serialize
 passport.deserializeUser(User.deserializeUser());  //user related session unstore called deserialize
 
@@ -114,6 +117,8 @@ app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     next();
 });
+    // React API
+app.use("/api", apiRouter);
 
 app.get("/", listingController.index);
 
