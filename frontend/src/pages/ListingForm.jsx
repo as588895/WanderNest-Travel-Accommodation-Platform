@@ -1,3 +1,192 @@
-import {useEffect,useState} from 'react';import {useNavigate,useParams} from 'react-router-dom';import {ImagePlus,MapPin,IndianRupee,Save} from 'lucide-react';import {listings} from '../services/api';
-const cats=['Trending','Rooms','Iconic Cities','Mountains','Castles','Amazing Pools','Camping','Farms','Arctic'];
-export default function ListingForm({mode,notify}){const edit=mode==='edit';const {id}=useParams();const nav=useNavigate();const [f,setF]=useState({title:'',description:'',price:'',location:'',country:'',category:'Trending'});const [file,setFile]=useState(null);const [preview,setPreview]=useState('');const [busy,setBusy]=useState(false);useEffect(()=>{if(edit)listings.one(id).then(r=>{const x=r.data.listing;setF({title:x.title||'',description:x.description||'',price:x.price||'',location:x.location||'',country:x.country||'',category:x.category||'Trending'});setPreview(x.image?.url||'')}).catch(()=>nav('/listings'))},[id,edit]);const submit=async e=>{e.preventDefault();setBusy(true);const data=new FormData();Object.entries(f).forEach(([k,v])=>data.append(`listing[${k}]`,v));if(file)data.append('image',file);try{const r=edit?await listings.update(id,data):await listings.create(data);notify?.(r.data.message||'Saved');nav(`/listings/${edit?id:r.data.listing._id}`)}catch(e){notify?.(e.response?.data?.error||'Unable to save listing. Check MAP_TOKEN and form details.')}finally{setBusy(false)}};return <section className="form-page"><div className="container form-layout"><div><span className="eyebrow">HOST ON WANDERNEST</span><h1>{edit?'Edit your stay':'Add a new stay'}</h1><p className="muted">Create a polished listing with a mapped location and optional Cloudinary image.</p><div className="form-tip"><MapPin/><div><b>Location mapping</b><span>Your location is geocoded through Mapbox so the stay can be shown as a mapped property.</span></div></div></div><form className="listing-form panel" onSubmit={submit}><div className="image-upload"><div className="upload-preview">{preview?<img src={preview}/>:<><ImagePlus size={30}/><span>Property preview</span></>}</div><label className="upload-btn"><ImagePlus size={16}/> {file?'Change image':'Upload image'}<input type="file" accept="image/png,image/jpeg,image/jpg" onChange={e=>{const x=e.target.files?.[0];if(x){setFile(x);setPreview(URL.createObjectURL(x))}}}/></label></div><div className="two-col"><div className="field"><label>Title</label><input required value={f.title} onChange={e=>setF({...f,title:e.target.value})} placeholder="Sunset Villa in Goa"/></div><div className="field"><label>Country</label><input required value={f.country} onChange={e=>setF({...f,country:e.target.value})} placeholder="India"/></div></div><div className="field"><label>Description</label><textarea rows="5" required value={f.description} onChange={e=>setF({...f,description:e.target.value})} placeholder="Describe the stay, amenities and experience..."/></div><div className="two-col"><div className="field"><label><IndianRupee size={14}/> Price per night</label><input type="number" min="0" required value={f.price} onChange={e=>setF({...f,price:e.target.value})}/></div><div className="field"><label>Category</label><select value={f.category} onChange={e=>setF({...f,category:e.target.value})}>{cats.map(c=><option key={c}>{c}</option>)}</select></div></div><div className="field"><label><MapPin size={14}/> Location</label><input required value={f.location} onChange={e=>setF({...f,location:e.target.value})} placeholder="Goa, India"/></div><button disabled={busy} className="btn btn-primary form-submit"><Save size={17}/> {busy?'Saving...':edit?'Save changes':'Publish listing'}</button></form></div></section>}
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { ImagePlus, MapPin, IndianRupee, Save } from "lucide-react";
+import { listings } from "../services/api";
+const cats = [
+  "Trending",
+  "Rooms",
+  "Iconic Cities",
+  "Mountains",
+  "Castles",
+  "Amazing Pools",
+  "Camping",
+  "Farms",
+  "Arctic",
+];
+export default function ListingForm({ mode, notify }) {
+  const edit = mode === "edit";
+  const { id } = useParams();
+  const nav = useNavigate();
+  const [f, setF] = useState({
+    title: "",
+    description: "",
+    price: "",
+    location: "",
+    country: "",
+    category: "Trending",
+  });
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState("");
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    if (edit)
+      listings
+        .one(id)
+        .then((r) => {
+          const x = r.data.listing;
+          setF({
+            title: x.title || "",
+            description: x.description || "",
+            price: x.price || "",
+            location: x.location || "",
+            country: x.country || "",
+            category: x.category || "Trending",
+          });
+          setPreview(x.image?.url || "");
+        })
+        .catch(() => nav("/listings"));
+  }, [id, edit]);
+  const submit = async (e) => {
+    e.preventDefault();
+    setBusy(true);
+    const data = new FormData();
+    Object.entries(f).forEach(([k, v]) => data.append(`listing[${k}]`, v));
+    if (file) data.append("image", file);
+    try {
+      const r = edit
+        ? await listings.update(id, data)
+        : await listings.create(data);
+      notify?.(r.data.message || "Saved");
+      nav(`/listings/${edit ? id : r.data.listing._id}`);
+    } catch (e) {
+      notify?.(
+        e.response?.data?.error ||
+          "Unable to save listing. Check MAP_TOKEN and form details.",
+      );
+    } finally {
+      setBusy(false);
+    }
+  };
+  return (
+    <section className="form-page">
+      <div className="container form-layout">
+        <div>
+          <span className="eyebrow">HOST ON WANDERNEST</span>
+          <h1>{edit ? "Edit your stay" : "Add a new stay"}</h1>
+          <p className="muted">
+            Create a polished listing with a mapped location and optional
+            Cloudinary image.
+          </p>
+          <div className="form-tip">
+            <MapPin />
+            <div>
+              <b>Location mapping</b>
+              <span>
+                Your location is geocoded through Mapbox so the stay can be
+                shown as a mapped property.
+              </span>
+            </div>
+          </div>
+        </div>
+        <form className="listing-form panel" onSubmit={submit}>
+          <div className="image-upload">
+            <div className="upload-preview">
+              {preview ? (
+                <img src={preview} />
+              ) : (
+                <>
+                  <ImagePlus size={30} />
+                  <span>Property preview</span>
+                </>
+              )}
+            </div>
+            <label className="upload-btn">
+              <ImagePlus size={16} /> {file ? "Change image" : "Upload image"}
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/jpg"
+                onChange={(e) => {
+                  const x = e.target.files?.[0];
+                  if (x) {
+                    setFile(x);
+                    setPreview(URL.createObjectURL(x));
+                  }
+                }}
+              />
+            </label>
+          </div>
+          <div className="two-col">
+            <div className="field">
+              <label>Title</label>
+              <input
+                required
+                value={f.title}
+                onChange={(e) => setF({ ...f, title: e.target.value })}
+                placeholder="Sunset Villa in Goa"
+              />
+            </div>
+            <div className="field">
+              <label>Country</label>
+              <input
+                required
+                value={f.country}
+                onChange={(e) => setF({ ...f, country: e.target.value })}
+                placeholder="India"
+              />
+            </div>
+          </div>
+          <div className="field">
+            <label>Description</label>
+            <textarea
+              rows="5"
+              required
+              value={f.description}
+              onChange={(e) => setF({ ...f, description: e.target.value })}
+              placeholder="Describe the stay, amenities and experience..."
+            />
+          </div>
+          <div className="two-col">
+            <div className="field">
+              <label>
+                <IndianRupee size={14} /> Price per night
+              </label>
+              <input
+                type="number"
+                min="0"
+                required
+                value={f.price}
+                onChange={(e) => setF({ ...f, price: e.target.value })}
+              />
+            </div>
+            <div className="field">
+              <label>Category</label>
+              <select
+                value={f.category}
+                onChange={(e) => setF({ ...f, category: e.target.value })}
+              >
+                {cats.map((c) => (
+                  <option key={c}>{c}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <div className="field">
+            <label>
+              <MapPin size={14} /> Location
+            </label>
+            <input
+              required
+              value={f.location}
+              onChange={(e) => setF({ ...f, location: e.target.value })}
+              placeholder="Goa, India"
+            />
+          </div>
+          <button disabled={busy} className="btn btn-primary form-submit">
+            <Save size={17} />{" "}
+            {busy ? "Saving..." : edit ? "Save changes" : "Publish listing"}
+          </button>
+        </form>
+      </div>
+    </section>
+  );
+}
