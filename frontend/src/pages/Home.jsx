@@ -108,9 +108,24 @@ export default function Home({ items = [] }) {
               ))}
             </div>
           ) : (
-            <div className="empty">
-              Your stays will appear here after the backend is connected.
-            </div>
+            
+<div className="empty">
+  <div className="empty-icon">
+    <i className="fa-solid fa-magnifying-glass"></i>
+  </div>
+
+  <h3>Finding Your Perfect Stay</h3>
+
+  <p>
+    We're getting your next adventure ready!
+    Our stays are being loaded, so please check back in a moment.
+  </p>
+
+  <span className="loading-status">
+    <span className="loading-dot"></span>
+    Connecting to available stays...
+  </span>
+</div>
           )}
         </div>
       </section>

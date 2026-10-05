@@ -1825,3 +1825,80 @@ body {
 .map-location-btn svg {
   stroke-width: 2.5;
 }
+
+
+.empty {
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  color: #64748b;
+}
+
+.empty-icon {
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fff0f3;
+  color: #ff385c;
+  font-size: 30px;
+  margin-bottom: 20px;
+}
+
+.empty h3 {
+  color: #172033;
+  font-size: 25px;
+  font-weight: 700;
+  margin: 0 0 10px;
+}
+
+.empty p {
+  max-width: 480px;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0 0 20px;
+}
+
+.loading-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ff385c;
+}
+
+.loading-dot {
+  width: 9px;
+  height: 9px;
+  background: #ff385c;
+  border-radius: 50%;
+  animation: loadingPulse 1.2s infinite ease-in-out;
+}
+
+@keyframes loadingPulse {
+  0%, 100% {
+    opacity: 0.4;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@media (max-width: 600px) {
+  .empty h3 {
+    font-size: 21px;
+  }
+
+  .empty p {
+    font-size: 14px;
+  }
+}
